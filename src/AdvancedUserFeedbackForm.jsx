@@ -716,12 +716,12 @@ const AdvancedUserFeedbackForm = () => {
   };
 
   // Show notification system
-  const showNotification = (type, message) => {
+  const showNotification = useCallback((type, message) => {
     setNotification({ show: true, type, message });
     setTimeout(() => {
       setNotification({ show: false, type: '', message: '' });
     }, 4000);
-  };
+  }, []);
 
   // Data Persistence Functions
   const saveToLocalStorage = useCallback(() => {
@@ -761,7 +761,7 @@ const AdvancedUserFeedbackForm = () => {
     } catch (error) {
       console.error('Failed to load from localStorage:', error);
     }
-  }, [lang]);
+  }, [lang, showNotification]);
 
   const clearLocalStorage = () => {
     localStorage.removeItem('userFeedbackForm');
