@@ -1862,18 +1862,23 @@ const AdvancedUserFeedbackForm = () => {
                 }, 300);
               }
             }}
-            disabled={loading || stepLoading}
+            disabled={loading || stepLoading || !validateStep(currentStep)}
             style={{
               padding: window.innerWidth <= 768 ? '16px 32px' : '12px 24px',
               border: 'none',
               borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: (loading || stepLoading || !validateStep(currentStep)) 
+                ? '#ccc' 
+                : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: '#fff',
-              cursor: 'pointer',
+              cursor: (loading || stepLoading || !validateStep(currentStep)) ? 'not-allowed' : 'pointer',
               fontSize: window.innerWidth <= 768 ? '18px' : '16px',
               fontWeight: '600',
               transition: 'all 0.2s ease',
-              boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+              boxShadow: (loading || stepLoading || !validateStep(currentStep)) 
+                ? 'none' 
+                : '0 4px 12px rgba(102, 126, 234, 0.3)',
+              opacity: (loading || stepLoading || !validateStep(currentStep)) ? 0.6 : 1,
               minHeight: window.innerWidth <= 768 ? '48px' : '40px'
             }}
           >
