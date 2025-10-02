@@ -5,6 +5,11 @@ const AdminDashboard = () => {
     const [userFeedbacks, setUserFeedbacks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
+    
+    // Modal states for viewing details
+    const [showModal, setShowModal] = useState(false);
+    const [selectedFeedback, setSelectedFeedback] = useState(null);
+    const [modalType, setModalType] = useState(''); // 'owner' or 'user'
 
     useEffect(() => {
         fetchAllFeedbacks();
@@ -80,6 +85,20 @@ const AdminDashboard = () => {
             }
             return acc;
         }, {})
+    };
+
+    // Handle viewing detailed feedback
+    const handleViewDetails = (feedback, type) => {
+        setSelectedFeedback(feedback);
+        setModalType(type);
+        setShowModal(true);
+    };
+
+    // Close modal
+    const closeModal = () => {
+        setShowModal(false);
+        setSelectedFeedback(null);
+        setModalType('');
     };
 
     if (loading) {
@@ -365,6 +384,7 @@ const AdminDashboard = () => {
                                             <th style={modernTableHeader}>Rating</th>
                                             <th style={modernTableHeader}>Language</th>
                                             <th style={modernTableHeader}>Date</th>
+                                            <th style={modernTableHeader}>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -471,6 +491,33 @@ const AdminDashboard = () => {
                                                 <td style={modernTableCell}>
                                                     {new Date(feedback.createdAt || feedback.submittedAt).toLocaleDateString()}
                                                 </td>
+                                                <td style={modernTableCell}>
+                                                    <button
+                                                        onClick={() => handleViewDetails(feedback, 'owner')}
+                                                        style={{
+                                                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                            color: 'white',
+                                                            border: 'none',
+                                                            padding: '8px 16px',
+                                                            borderRadius: '6px',
+                                                            fontSize: '12px',
+                                                            cursor: 'pointer',
+                                                            fontWeight: '500',
+                                                            transition: 'all 0.2s ease',
+                                                            boxShadow: '0 2px 4px rgba(102, 126, 234, 0.2)'
+                                                        }}
+                                                        onMouseOver={(e) => {
+                                                            e.target.style.transform = 'translateY(-1px)';
+                                                            e.target.style.boxShadow = '0 4px 8px rgba(102, 126, 234, 0.3)';
+                                                        }}
+                                                        onMouseOut={(e) => {
+                                                            e.target.style.transform = 'translateY(0)';
+                                                            e.target.style.boxShadow = '0 2px 4px rgba(102, 126, 234, 0.2)';
+                                                        }}
+                                                    >
+                                                        👁️ View Details
+                                                    </button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -522,6 +569,7 @@ const AdminDashboard = () => {
                                             <th style={modernTableHeader}>Rating</th>
                                             <th style={modernTableHeader}>Language</th>
                                             <th style={modernTableHeader}>Date</th>
+                                            <th style={modernTableHeader}>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -629,6 +677,33 @@ const AdminDashboard = () => {
                                                 <td style={modernTableCell}>
                                                     {new Date(feedback.createdAt || feedback.submittedAt).toLocaleDateString()}
                                                 </td>
+                                                <td style={modernTableCell}>
+                                                    <button
+                                                        onClick={() => handleViewDetails(feedback, 'user')}
+                                                        style={{
+                                                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                            color: 'white',
+                                                            border: 'none',
+                                                            padding: '8px 16px',
+                                                            borderRadius: '6px',
+                                                            fontSize: '12px',
+                                                            cursor: 'pointer',
+                                                            fontWeight: '500',
+                                                            transition: 'all 0.2s ease',
+                                                            boxShadow: '0 2px 4px rgba(102, 126, 234, 0.2)'
+                                                        }}
+                                                        onMouseOver={(e) => {
+                                                            e.target.style.transform = 'translateY(-1px)';
+                                                            e.target.style.boxShadow = '0 4px 8px rgba(102, 126, 234, 0.3)';
+                                                        }}
+                                                        onMouseOut={(e) => {
+                                                            e.target.style.transform = 'translateY(0)';
+                                                            e.target.style.boxShadow = '0 2px 4px rgba(102, 126, 234, 0.2)';
+                                                        }}
+                                                    >
+                                                        👁️ View Details
+                                                    </button>
+                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -638,6 +713,294 @@ const AdminDashboard = () => {
                     </div>
                 )}
             </div>
+
+            {/* Details Modal */}
+            {showModal && selectedFeedback && (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0,0,0,0.7)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1000,
+                padding: '20px'
+            }}>
+                <div style={{
+                    background: 'white',
+                    borderRadius: '16px',
+                    padding: '32px',
+                    maxWidth: '800px',
+                    width: '100%',
+                    maxHeight: '90vh',
+                    overflow: 'auto',
+                    position: 'relative',
+                    boxShadow: '0 20px 40px rgba(0,0,0,0.3)'
+                }}>
+                    {/* Close Button */}
+                    <button
+                        onClick={closeModal}
+                        style={{
+                            position: 'absolute',
+                            top: '20px',
+                            right: '20px',
+                            background: '#f87171',
+                            border: 'none',
+                            borderRadius: '50%',
+                            width: '40px',
+                            height: '40px',
+                            fontSize: '20px',
+                            cursor: 'pointer',
+                            color: 'white',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        ✕
+                    </button>
+
+                    {/* Modal Content */}
+                    <div style={{ marginRight: '60px' }}>
+                        {modalType === 'owner' ? (
+                            // Owner Details
+                            <div>
+                                <h2 style={{ 
+                                    color: '#1f2937', 
+                                    marginBottom: '24px',
+                                    fontSize: '24px',
+                                    fontWeight: '700'
+                                }}>
+                                    🏢 Property Owner Details
+                                </h2>
+                                
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                                    {/* Personal Info */}
+                                    <div style={{ background: '#f8faff', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>📋 Personal Information</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Name:</strong> {selectedFeedback.name || 'N/A'}</p>
+                                            <p><strong>Email:</strong> {selectedFeedback.email || 'N/A'}</p>
+                                            <p><strong>Phone:</strong> {selectedFeedback.phone || 'N/A'}</p>
+                                            <p><strong>City:</strong> {selectedFeedback.city || 'N/A'}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Business Info */}
+                                    <div style={{ background: '#f0fdf4', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>🏠 Business Details</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Property Type:</strong> {selectedFeedback.propertyType || 'N/A'}</p>
+                                            <p><strong>Property Count:</strong> {selectedFeedback.propertyCount || 'N/A'}</p>
+                                            <p><strong>Marketing Spend:</strong> {selectedFeedback.marketingSpend || 'N/A'}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Challenges */}
+                                    <div style={{ background: '#fff7ed', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>⚠️ Current Challenges</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Biggest Challenge:</strong> {selectedFeedback.biggestChallenge || 'N/A'}</p>
+                                            {selectedFeedback.otherChallenge && (
+                                                <p><strong>Other Challenge:</strong> {selectedFeedback.otherChallenge}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Switch Reasons */}
+                                    <div style={{ background: '#f0f9ff', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>🔄 Switch Reasons</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            {selectedFeedback.switchReasons && Array.isArray(selectedFeedback.switchReasons) ? (
+                                                <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                                    {selectedFeedback.switchReasons.map((reason, idx) => (
+                                                        <li key={idx} style={{ marginBottom: '8px' }}>{reason}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p>No switch reasons provided</p>
+                                            )}
+                                            {selectedFeedback.otherSwitchReason && (
+                                                <p style={{ marginTop: '12px' }}><strong>Other Reason:</strong> {selectedFeedback.otherSwitchReason}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Features */}
+                                    <div style={{ background: '#fef7ff', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>⭐ Top Features Needed</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            {selectedFeedback.topFeatures && Array.isArray(selectedFeedback.topFeatures) ? (
+                                                <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                                    {selectedFeedback.topFeatures.map((feature, idx) => (
+                                                        <li key={idx} style={{ marginBottom: '8px' }}>{feature}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p>No features specified</p>
+                                            )}
+                                            {selectedFeedback.otherFeature && (
+                                                <p style={{ marginTop: '12px' }}><strong>Other Feature:</strong> {selectedFeedback.otherFeature}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Budget & Metrics */}
+                                    <div style={{ background: '#ecfdf5', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>💰 Budget & Metrics</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Ready to Pay:</strong> {selectedFeedback.readyToPay || 'N/A'}</p>
+                                            <p><strong>Timeline:</strong> {selectedFeedback.timing || 'N/A'}</p>
+                                            <p><strong>Recommendation Score:</strong> 
+                                                <span style={{
+                                                    background: selectedFeedback.recommendation >= 8 ? '#10b981' : 
+                                                               selectedFeedback.recommendation >= 6 ? '#f59e0b' : '#ef4444',
+                                                    color: 'white',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    marginLeft: '8px'
+                                                }}>
+                                                    {selectedFeedback.recommendation || 0}/10
+                                                </span>
+                                            </p>
+                                            <p><strong>Language:</strong> {selectedFeedback.language || 'N/A'}</p>
+                                            <p><strong>Form Completion Time:</strong> {selectedFeedback.completionTime ? `${Math.round(selectedFeedback.completionTime)} seconds` : 'N/A'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            // User Details
+                            <div>
+                                <h2 style={{ 
+                                    color: '#1f2937', 
+                                    marginBottom: '24px',
+                                    fontSize: '24px',
+                                    fontWeight: '700'
+                                }}>
+                                    👤 Room Seeker Details
+                                </h2>
+                                
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                                    {/* Personal Info */}
+                                    <div style={{ background: '#f8faff', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>📋 Personal Information</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Name:</strong> {selectedFeedback.name || 'N/A'}</p>
+                                            <p><strong>Email:</strong> {selectedFeedback.email || 'N/A'}</p>
+                                            <p><strong>Phone:</strong> {selectedFeedback.phone || 'N/A'}</p>
+                                            <p><strong>Age:</strong> {selectedFeedback.age || 'N/A'}</p>
+                                            <p><strong>City:</strong> {selectedFeedback.city || 'N/A'}</p>
+                                            <p><strong>Occupation:</strong> {selectedFeedback.occupation || 'N/A'}</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Current Situation */}
+                                    <div style={{ background: '#fffbeb', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>🏠 Current Housing</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Current Situation:</strong> {selectedFeedback.currentSituation || 'N/A'}</p>
+                                            {selectedFeedback.otherCurrentSituation && (
+                                                <p><strong>Other Situation:</strong> {selectedFeedback.otherCurrentSituation}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Problems */}
+                                    <div style={{ background: '#fef2f2', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>⚠️ Main Problems</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            {selectedFeedback.mainProblems && Array.isArray(selectedFeedback.mainProblems) ? (
+                                                <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                                    {selectedFeedback.mainProblems.map((problem, idx) => (
+                                                        <li key={idx} style={{ marginBottom: '8px' }}>{problem}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p>No problems specified</p>
+                                            )}
+                                            {selectedFeedback.otherMainProblem && (
+                                                <p style={{ marginTop: '12px' }}><strong>Other Problem:</strong> {selectedFeedback.otherMainProblem}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Important Features */}
+                                    <div style={{ background: '#f0f9ff', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>⭐ Important Features</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            {selectedFeedback.importantFeatures && Array.isArray(selectedFeedback.importantFeatures) ? (
+                                                <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                                                    {selectedFeedback.importantFeatures.map((feature, idx) => (
+                                                        <li key={idx} style={{ marginBottom: '8px' }}>{feature}</li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p>No features specified</p>
+                                            )}
+                                            {selectedFeedback.otherFeature && (
+                                                <p style={{ marginTop: '12px' }}><strong>Other Feature:</strong> {selectedFeedback.otherFeature}</p>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Budget & Metrics */}
+                                    <div style={{ background: '#ecfdf5', padding: '20px', borderRadius: '12px' }}>
+                                        <h3 style={{ color: '#374151', marginBottom: '16px', fontSize: '18px' }}>💰 Budget & Preferences</h3>
+                                        <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                                            <p><strong>Budget Range:</strong> {selectedFeedback.budget || 'N/A'}</p>
+                                            <p><strong>Willing to Pay:</strong> 
+                                                <span style={{
+                                                    background: selectedFeedback.willingToPay?.includes('Yes') || selectedFeedback.willingToPay?.includes('Haan') ? '#dcfce7' : '#fef3c7',
+                                                    color: selectedFeedback.willingToPay?.includes('Yes') || selectedFeedback.willingToPay?.includes('Haan') ? '#166534' : '#92400e',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    marginLeft: '8px'
+                                                }}>
+                                                    {selectedFeedback.willingToPay?.includes('Yes') || selectedFeedback.willingToPay?.includes('Haan') ? '💰 Yes' : '🆓 Free Only'}
+                                                </span>
+                                            </p>
+                                            <p><strong>Urgency:</strong> {selectedFeedback.urgency || 'N/A'}</p>
+                                            <p><strong>Recommendation Score:</strong> 
+                                                <span style={{
+                                                    background: selectedFeedback.recommendation >= 8 ? '#10b981' : 
+                                                               selectedFeedback.recommendation >= 6 ? '#f59e0b' : '#ef4444',
+                                                    color: 'white',
+                                                    padding: '4px 8px',
+                                                    borderRadius: '4px',
+                                                    marginLeft: '8px'
+                                                }}>
+                                                    {selectedFeedback.recommendation || 0}/10
+                                                </span>
+                                            </p>
+                                            <p><strong>Language:</strong> {selectedFeedback.language || 'N/A'}</p>
+                                            <p><strong>Form Completion Time:</strong> {selectedFeedback.completionTime ? `${Math.round(selectedFeedback.completionTime)} seconds` : 'N/A'}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Submission Info */}
+                        <div style={{ 
+                            marginTop: '24px', 
+                            padding: '16px', 
+                            background: '#f3f4f6', 
+                            borderRadius: '8px',
+                            textAlign: 'center',
+                            fontSize: '14px',
+                            color: '#6b7280'
+                        }}>
+                            <p>📅 <strong>Submitted:</strong> {new Date(selectedFeedback.createdAt || selectedFeedback.submittedAt).toLocaleString()}</p>
+                            <p>🆔 <strong>ID:</strong> {selectedFeedback._id}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            )}
         </div>
     );
 };
