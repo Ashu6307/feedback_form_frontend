@@ -817,7 +817,7 @@ const AdvancedOwnerFeedbackForm = () => {
         submittedAt: new Date().toISOString()
       };
 
-      const response = await fetch('http://localhost:5000/api/owner-feedback', {
+      const response = await fetch('https://feedbackform-aab9.onrender.com/api/owner-feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(submissionData)

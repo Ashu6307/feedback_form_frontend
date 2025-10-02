@@ -14,8 +14,8 @@ const AdminDashboard = () => {
         setLoading(true);
         try {
             const [ownerResponse, userResponse] = await Promise.all([
-                fetch('http://localhost:5000/api/owner-feedback'),
-                fetch('http://localhost:5000/api/user-feedback')
+                fetch('https://feedbackform-aab9.onrender.com/api/owner-feedback'),
+                fetch('https://feedbackform-aab9.onrender.com/api/user-feedback')
             ]);
             
             const ownerData = await ownerResponse.json();
