@@ -30,7 +30,7 @@ const AdminDashboard = () => {
         }
     };
 
-    // Analytics calculations
+    // Enhanced Analytics calculations
     const analytics = {
         totalFeedbacks: ownerFeedbacks.length + userFeedbacks.length,
         ownerCount: ownerFeedbacks.length,
@@ -43,7 +43,43 @@ const AdminDashboard = () => {
             : 0,
         completionRate: ownerFeedbacks.length > 0 
             ? ((ownerFeedbacks.filter(f => f.completionTime).length / ownerFeedbacks.length) * 100).toFixed(1)
-            : 0
+            : 0,
+        
+        // New Analytics from Enhanced Fields
+        topChallenges: ownerFeedbacks.reduce((acc, f) => {
+            if (f.biggestChallenge) {
+                acc[f.biggestChallenge] = (acc[f.biggestChallenge] || 0) + 1;
+            }
+            return acc;
+        }, {}),
+        
+        budgetDistribution: ownerFeedbacks.reduce((acc, f) => {
+            if (f.readyToPay) {
+                acc[f.readyToPay] = (acc[f.readyToPay] || 0) + 1;
+            }
+            return acc;
+        }, {}),
+        
+        userPaymentWillingness: userFeedbacks.reduce((acc, f) => {
+            const willing = f.willingToPay?.includes('Yes') || f.willingToPay?.includes('Haan');
+            acc[willing ? 'willing' : 'not_willing'] = (acc[willing ? 'willing' : 'not_willing'] || 0) + 1;
+            return acc;
+        }, {}),
+        
+        urgencyLevels: userFeedbacks.reduce((acc, f) => {
+            if (f.urgency) {
+                const level = f.urgency.includes('Immediately') || f.urgency.includes('turant') ? 'urgent' : 'normal';
+                acc[level] = (acc[level] || 0) + 1;
+            }
+            return acc;
+        }, {}),
+        
+        languageDistribution: [...ownerFeedbacks, ...userFeedbacks].reduce((acc, f) => {
+            if (f.language) {
+                acc[f.language] = (acc[f.language] || 0) + 1;
+            }
+            return acc;
+        }, {})
     };
 
     if (loading) {
@@ -320,11 +356,12 @@ const AdminDashboard = () => {
                                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
                                         <tr style={{ background: '#f8faff' }}>
-                                            <th style={modernTableHeader}>Name</th>
-                                            <th style={modernTableHeader}>Contact</th>
+                                            <th style={modernTableHeader}>Name & Contact</th>
                                             <th style={modernTableHeader}>Location</th>
-                                            <th style={modernTableHeader}>Business</th>
+                                            <th style={modernTableHeader}>Business Details</th>
                                             <th style={modernTableHeader}>Challenge</th>
+                                            <th style={modernTableHeader}>Switch Reasons</th>
+                                            <th style={modernTableHeader}>Budget</th>
                                             <th style={modernTableHeader}>Rating</th>
                                             <th style={modernTableHeader}>Language</th>
                                             <th style={modernTableHeader}>Date</th>
@@ -335,8 +372,9 @@ const AdminDashboard = () => {
                                             <tr key={index} style={{ borderBottom: '1px solid #e2e8f0' }}>
                                                 <td style={modernTableCell}>
                                                     <div style={{ fontWeight: '500' }}>{feedback.name}</div>
+                                                    <div style={{ fontSize: '11px', color: '#64748b' }}>{feedback.email}</div>
+                                                    <div style={{ fontSize: '11px', color: '#64748b' }}>{feedback.phone}</div>
                                                 </td>
-                                                <td style={modernTableCell}>{feedback.phone}</td>
                                                 <td style={modernTableCell}>
                                                     {feedback.city}
                                                     {feedback.pincode && (
@@ -346,9 +384,12 @@ const AdminDashboard = () => {
                                                     )}
                                                 </td>
                                                 <td style={modernTableCell}>
-                                                    <div>{feedback.propertyType}</div>
+                                                    <div style={{ fontWeight: '500' }}>{feedback.propertyType}</div>
                                                     <div style={{ fontSize: '12px', color: '#64748b' }}>
                                                         {feedback.propertyCount} properties
+                                                    </div>
+                                                    <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                                                        Marketing: {feedback.marketingSpend || 'N/A'}
                                                     </div>
                                                 </td>
                                                 <td style={{ ...modernTableCell, maxWidth: '200px' }}>
@@ -360,9 +401,47 @@ const AdminDashboard = () => {
                                                             borderRadius: '4px',
                                                             color: '#c2410c'
                                                         }}>
-                                                            {feedback.biggestChallenge.substring(0, 40)}...
+                                                            {feedback.biggestChallenge.substring(0, 30)}...
                                                         </div>
                                                     ) : 'N/A'}
+                                                </td>
+                                                <td style={{ ...modernTableCell, maxWidth: '180px' }}>
+                                                    {feedback.switchReasons && Array.isArray(feedback.switchReasons) ? (
+                                                        <div style={{ fontSize: '11px' }}>
+                                                            {feedback.switchReasons.slice(0, 2).map((reason, idx) => (
+                                                                <div key={idx} style={{
+                                                                    background: '#f0f9ff',
+                                                                    color: '#0369a1',
+                                                                    padding: '2px 6px',
+                                                                    borderRadius: '4px',
+                                                                    margin: '1px 0',
+                                                                    fontSize: '10px'
+                                                                }}>
+                                                                    {reason.substring(0, 25)}
+                                                                </div>
+                                                            ))}
+                                                            {feedback.switchReasons.length > 2 && (
+                                                                <div style={{ fontSize: '10px', color: '#64748b' }}>
+                                                                    +{feedback.switchReasons.length - 2} more
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : 'N/A'}
+                                                </td>
+                                                <td style={modernTableCell}>
+                                                    <div style={{
+                                                        background: '#f0fdf4',
+                                                        color: '#166534',
+                                                        padding: '6px 10px',
+                                                        borderRadius: '6px',
+                                                        fontSize: '11px',
+                                                        textAlign: 'center'
+                                                    }}>
+                                                        {feedback.readyToPay || 'N/A'}
+                                                    </div>
+                                                    <div style={{ fontSize: '10px', color: '#64748b', marginTop: '4px' }}>
+                                                        Timeline: {feedback.timing || 'N/A'}
+                                                    </div>
                                                 </td>
                                                 <td style={modernTableCell}>
                                                     <span style={{
@@ -434,12 +513,12 @@ const AdminDashboard = () => {
                                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                     <thead>
                                         <tr style={{ background: '#f8faff' }}>
-                                            <th style={modernTableHeader}>Name</th>
+                                            <th style={modernTableHeader}>Name & Contact</th>
                                             <th style={modernTableHeader}>Profile</th>
                                             <th style={modernTableHeader}>Location</th>
-                                            <th style={modernTableHeader}>Budget</th>
-                                            <th style={modernTableHeader}>Urgency</th>
-                                            <th style={modernTableHeader}>Payment</th>
+                                            <th style={modernTableHeader}>Current Situation</th>
+                                            <th style={modernTableHeader}>Main Problems</th>
+                                            <th style={modernTableHeader}>Budget & Payment</th>
                                             <th style={modernTableHeader}>Rating</th>
                                             <th style={modernTableHeader}>Language</th>
                                             <th style={modernTableHeader}>Date</th>
@@ -450,9 +529,8 @@ const AdminDashboard = () => {
                                             <tr key={index} style={{ borderBottom: '1px solid #e2e8f0' }}>
                                                 <td style={modernTableCell}>
                                                     <div style={{ fontWeight: '500' }}>{feedback.name}</div>
-                                                    <div style={{ fontSize: '12px', color: '#64748b' }}>
-                                                        {feedback.phone}
-                                                    </div>
+                                                    <div style={{ fontSize: '11px', color: '#64748b' }}>{feedback.email}</div>
+                                                    <div style={{ fontSize: '11px', color: '#64748b' }}>{feedback.phone}</div>
                                                 </td>
                                                 <td style={modernTableCell}>
                                                     <div>{feedback.age}</div>
@@ -461,43 +539,67 @@ const AdminDashboard = () => {
                                                     </div>
                                                 </td>
                                                 <td style={modernTableCell}>{feedback.city}</td>
+                                                <td style={{ ...modernTableCell, maxWidth: '150px' }}>
+                                                    {feedback.currentSituation ? (
+                                                        <div style={{
+                                                            fontSize: '11px',
+                                                            background: '#fffbeb',
+                                                            color: '#92400e',
+                                                            padding: '4px 6px',
+                                                            borderRadius: '4px'
+                                                        }}>
+                                                            {feedback.currentSituation.substring(0, 25)}...
+                                                        </div>
+                                                    ) : 'N/A'}
+                                                </td>
+                                                <td style={{ ...modernTableCell, maxWidth: '180px' }}>
+                                                    {feedback.mainProblems && Array.isArray(feedback.mainProblems) ? (
+                                                        <div style={{ fontSize: '11px' }}>
+                                                            {feedback.mainProblems.slice(0, 2).map((problem, idx) => (
+                                                                <div key={idx} style={{
+                                                                    background: '#fef2f2',
+                                                                    color: '#991b1b',
+                                                                    padding: '2px 6px',
+                                                                    borderRadius: '4px',
+                                                                    margin: '1px 0',
+                                                                    fontSize: '10px'
+                                                                }}>
+                                                                    {problem.substring(0, 20)}
+                                                                </div>
+                                                            ))}
+                                                            {feedback.mainProblems.length > 2 && (
+                                                                <div style={{ fontSize: '10px', color: '#64748b' }}>
+                                                                    +{feedback.mainProblems.length - 2} more
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ) : 'N/A'}
+                                                </td>
                                                 <td style={modernTableCell}>
-                                                    <span style={{
+                                                    <div style={{
                                                         background: '#ecfdf5',
                                                         color: '#065f46',
                                                         padding: '4px 8px',
-                                                        borderRadius: '8px',
-                                                        fontSize: '12px'
+                                                        borderRadius: '6px',
+                                                        fontSize: '11px',
+                                                        textAlign: 'center',
+                                                        marginBottom: '4px'
                                                     }}>
                                                         {feedback.budget}
-                                                    </span>
-                                                </td>
-                                                <td style={modernTableCell}>
-                                                    <span style={{
-                                                        background: feedback.urgency?.includes('Immediately') || 
-                                                                   feedback.urgency?.includes('turant') ? '#fef2f2' : '#fef7ff',
-                                                        color: feedback.urgency?.includes('Immediately') || 
-                                                               feedback.urgency?.includes('turant') ? '#991b1b' : '#7c2d12',
-                                                        padding: '4px 8px',
-                                                        borderRadius: '8px',
-                                                        fontSize: '11px'
-                                                    }}>
-                                                        {feedback.urgency ? feedback.urgency.substring(0, 20) : 'N/A'}
-                                                    </span>
-                                                </td>
-                                                <td style={modernTableCell}>
-                                                    <span style={{
+                                                    </div>
+                                                    <div style={{
                                                         background: feedback.willingToPay?.includes('Yes') || 
                                                                    feedback.willingToPay?.includes('Haan') ? '#dcfce7' : '#fef3c7',
                                                         color: feedback.willingToPay?.includes('Yes') || 
                                                                feedback.willingToPay?.includes('Haan') ? '#166534' : '#92400e',
-                                                        padding: '4px 8px',
-                                                        borderRadius: '8px',
-                                                        fontSize: '11px'
+                                                        padding: '2px 6px',
+                                                        borderRadius: '4px',
+                                                        fontSize: '10px',
+                                                        textAlign: 'center'
                                                     }}>
                                                         {feedback.willingToPay?.includes('Yes') || 
                                                          feedback.willingToPay?.includes('Haan') ? '💰 Yes' : '🆓 Free'}
-                                                    </span>
+                                                    </div>
                                                 </td>
                                                 <td style={modernTableCell}>
                                                     <span style={{
