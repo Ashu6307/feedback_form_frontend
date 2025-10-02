@@ -490,21 +490,21 @@ const AdvancedUserFeedbackForm = () => {
     }
   };
 
-  const currentLang = languages[lang];
+  const currentLang = languages[lang] || languages.hinglish || languages.english;
 
   // Helper functions for option mapping system
   const getOptionText = (optionId, category) => {
     if (!optionId || !optionMappings[category] || !optionMappings[category][optionId]) {
-      return optionId; // Return as-is if not found
+      return optionId || ''; // Return as-is if not found
     }
-    return optionMappings[category][optionId][lang] || optionId;
+    return optionMappings[category][optionId][lang] || optionMappings[category][optionId]['hinglish'] || optionId;
   };
 
   const getOptionsList = (category) => {
     if (!optionMappings[category]) return [];
     return Object.keys(optionMappings[category]).map(id => ({
       id,
-      text: optionMappings[category][id][lang]
+      text: optionMappings[category][id][lang] || optionMappings[category][id]['hinglish'] || id
     }));
   };
 
@@ -1122,7 +1122,7 @@ const AdvancedUserFeedbackForm = () => {
                         height: window.innerWidth <= 768 ? '52px' : '48px'
                       }}
                     >
-                      {currentLang.profile.ageOptions.map((option, index) => (
+                      {(currentLang.profile.ageOptions || []).map((option, index) => (
                         <option key={index} value={index === 0 ? '' : option}>
                           {option}
                         </option>
@@ -1243,7 +1243,7 @@ const AdvancedUserFeedbackForm = () => {
                       height: window.innerWidth <= 768 ? '52px' : '48px'
                     }}
                   >
-                    {currentLang.profile.occupationOptions.map((option, index) => (
+                    {(currentLang.profile.occupationOptions || []).map((option, index) => (
                       <option key={index} value={index === 0 ? '' : option}>
                         {option}
                       </option>
@@ -1291,7 +1291,7 @@ const AdvancedUserFeedbackForm = () => {
                       height: window.innerWidth <= 768 ? '52px' : '48px'
                     }}
                   >
-                    {currentLang.profile.budgetOptions.map((option, index) => (
+                    {(currentLang.profile.budgetOptions || []).map((option, index) => (
                       <option key={index} value={index === 0 ? '' : option}>
                         {option}
                       </option>
@@ -1652,14 +1652,14 @@ const AdvancedUserFeedbackForm = () => {
                   margin: '0 0 8px 0',
                   color: '#1e293b'
                 }}>
-                  {currentLang.success.title}
+                  {currentLang.success?.title}
                 </h2>
                 <p style={{
                   fontSize: '16px',
                   color: '#64748b',
                   margin: 0
                 }}>
-                  {currentLang.success.subtitle}
+                  {currentLang.success?.subtitle}
                 </p>
               </div>
 
@@ -1674,10 +1674,10 @@ const AdvancedUserFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.success.willingToPay}
+                    {currentLang.success?.willingToPay}
                   </label>
                   <div style={{ display: 'grid', gap: '8px' }}>
-                    {currentLang.success.paymentOptions.map((option, index) => (
+                    {(currentLang.success?.paymentOptions || []).map((option, index) => (
                       <label 
                         key={index}
                         style={{
@@ -1729,7 +1729,7 @@ const AdvancedUserFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.success.recommendation}
+                    {currentLang.success?.recommendation}
                   </label>
                   <div style={{
                     display: 'flex',
@@ -1771,10 +1771,10 @@ const AdvancedUserFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.success.urgency}
+                    {currentLang.success?.urgency}
                   </label>
                   <div style={{ display: 'grid', gap: '8px' }}>
-                    {currentLang.success.urgencyOptions.map((option, index) => (
+                    {(currentLang.success?.urgencyOptions || []).map((option, index) => (
                       <label 
                         key={index}
                         style={{
