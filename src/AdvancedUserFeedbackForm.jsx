@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
+import {
   filterNameInput,
   getNormalizedMobile,
   getMobileValidationError,
   getEmailValidationError,
   validateName,
-  validateFormField 
+  validateFormField
 } from './utils/validations.js';
 
 // Advanced User Feedback Form - Complete redesign
@@ -133,9 +133,9 @@ const AdvancedUserFeedbackForm = () => {
     // Profile
     name: '',
     email: '',
-    age: '',
     phone: '',
     city: '',
+    otherCity: '',
     occupation: '',
     budget: '',
     
@@ -183,8 +183,6 @@ const AdvancedUserFeedbackForm = () => {
         subtitle: 'Tell us about yourself (30 seconds)',
         name: 'Full Name *',
         email: 'Email Address *',
-        age: 'Age *',
-        ageOptions: ['Select age', '18-22 (Student)', '23-27 (Early Career)', '28-35 (Professional)', '35+ (Senior)'],
         phone: 'Phone Number *',
         city: 'Current City *',
         occupation: 'Occupation *',
@@ -291,8 +289,6 @@ const AdvancedUserFeedbackForm = () => {
         subtitle: 'अपने बारे में बताएं (30 सेकंड)',
         name: 'पूरा नाम *',
         email: 'ईमेल एड्रेस *',
-        age: 'आयु *',
-        ageOptions: ['आयु चुनें', '18-22 (छात्र)', '23-27 (शुरुआती करियर)', '28-35 (प्रोफेशनल)', '35+ (सीनियर)'],
         phone: 'फोन नंबर *',
         city: 'वर्तमान शहर *',
         occupation: 'पेशा *',
@@ -364,7 +360,7 @@ const AdvancedUserFeedbackForm = () => {
         willingToPay: 'क्या आप प्रीमियम फीचर्स के लिए पे करेंगे? *',
         paymentOptions: [
           '💎 हां - ₹99/महीना प्रीमियम सर्च के लिए',
-          '🎯 हां - ₹299 वन-टाइम बुकिंग गारंटी के लिए',
+          '🎯 हां - ₹299 वन-TIME बुकिंग गारंटी के लिए',
           '🆓 केवल अगर बेसिक सर्च बिल्कुल फ्री हो',
           '❌ रूम सर्च के लिए कभी पे नहीं करूंगा'
         ],
@@ -395,8 +391,6 @@ const AdvancedUserFeedbackForm = () => {
         subtitle: 'Apne bare me batayiye (30 seconds)',
         name: 'Pura Naam *',
         email: 'Email Address *',
-        age: 'Age *',
-        ageOptions: ['Age select kare', '18-22 (Student)', '23-27 (Early Career)', '28-35 (Professional)', '35+ (Senior)'],
         phone: 'Phone Number *',
         city: 'Current City *',
         occupation: 'Occupation *',
@@ -490,21 +484,21 @@ const AdvancedUserFeedbackForm = () => {
     }
   };
 
-  const currentLang = languages[lang] || languages.hinglish || languages.english;
+  const currentLang = languages[lang];
 
   // Helper functions for option mapping system
   const getOptionText = (optionId, category) => {
     if (!optionId || !optionMappings[category] || !optionMappings[category][optionId]) {
-      return optionId || ''; // Return as-is if not found
+      return optionId; // Return as-is if not found
     }
-    return optionMappings[category][optionId][lang] || optionMappings[category][optionId]['hinglish'] || optionId;
+    return optionMappings[category][optionId][lang] || optionId;
   };
 
   const getOptionsList = (category) => {
     if (!optionMappings[category]) return [];
     return Object.keys(optionMappings[category]).map(id => ({
       id,
-      text: optionMappings[category][id][lang] || optionMappings[category][id]['hinglish'] || id
+      text: optionMappings[category][id][lang]
     }));
   };
 
@@ -521,34 +515,8 @@ const AdvancedUserFeedbackForm = () => {
   };
 
   // Device Submission Tracking Functions
-  const checkPreviousSubmission = () => {
-    try {
-      const userSubmission = localStorage.getItem('userFeedbackSubmitted');
-      if (userSubmission) {
-        const submissionData = JSON.parse(userSubmission);
-        const submissionTime = new Date(submissionData.timestamp);
-        const now = new Date();
-        
-        // Check if submission is within last 30 days (prevent multiple submissions)
-        const daysDiff = (now - submissionTime) / (1000 * 60 * 60 * 24);
-        
-        if (daysDiff < 30) {
-          setAlreadySubmitted(true);
-          setSubmissionInfo(submissionData);
-          return true;
-        } else {
-          // Clear old submission (older than 30 days)
-          localStorage.removeItem('userFeedbackSubmitted');
-        }
-      }
-      return false;
-    } catch (error) {
-      console.error('Error checking previous submission:', error);
-      return false;
-    }
-  };
 
-  const markAsSubmitted = (formData) => {
+  const markAsSubmitted = useCallback((formData) => {
     try {
       const submissionRecord = {
         submitted: true,
@@ -571,7 +539,7 @@ const AdvancedUserFeedbackForm = () => {
     } catch (error) {
       console.error('Error marking submission:', error);
     }
-  };
+  }, []);
 
   // Form validation
   const validateStep = (step) => {
@@ -598,7 +566,6 @@ const AdvancedUserFeedbackForm = () => {
         }
         
         // Other required fields
-        if (!form.age) newErrors.age = 'Age is required';
         if (!form.city.trim()) newErrors.city = 'City is required';
         if (!form.occupation) newErrors.occupation = 'Occupation is required';
         if (!form.budget) newErrors.budget = 'Budget range is required';
@@ -634,8 +601,7 @@ const AdvancedUserFeedbackForm = () => {
         break;
     }
     
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   // Professional form submission with loading states
@@ -649,6 +615,7 @@ const AdvancedUserFeedbackForm = () => {
     // Convert IDs to readable text for submission
     const formData = {
       ...form,
+      city: form.city === 'OTHER' ? form.otherCity : getOptionText(form.city, 'city'),
       // Convert option IDs to readable text
       currentSituation: form.currentSituation ? getOptionText(form.currentSituation, 'currentSituation') : '',
       mainProblems: form.mainProblems.map(id => getOptionText(id, 'painPoints')),
@@ -690,7 +657,7 @@ const AdvancedUserFeedbackForm = () => {
         // Reset form after success animation with delay (fallback)
         setTimeout(() => {
           setForm({
-            name: '', email: '', age: '', phone: '', city: '', occupation: '', budget: '',
+            name: '', email: '', phone: '', city: '', occupation: '', budget: '',
             currentSituation: '', otherCurrentSituation: '', mainProblems: [], otherMainProblem: '',
             importantFeatures: [], otherFeature: '', willingToPay: '',
             recommendation: 5, urgency: '', formStartTime: Date.now()
@@ -734,34 +701,7 @@ const AdvancedUserFeedbackForm = () => {
     }
   }, [form, currentStep]);
 
-  const loadFromLocalStorage = useCallback(() => {
-    try {
-      const savedForm = localStorage.getItem('userFeedbackForm');
-      const savedStep = localStorage.getItem('userFeedbackStep');
-      const lastSaved = localStorage.getItem('userFeedbackLastSaved');
-      
-      if (savedForm && savedStep && lastSaved) {
-        const saveTime = new Date(lastSaved);
-        const now = new Date();
-        const hoursDiff = (now.getTime() - saveTime.getTime()) / (1000 * 3600);
-        
-        // Only restore if saved within last 24 hours
-        if (hoursDiff < 24) {
-          setForm(JSON.parse(savedForm));
-          setCurrentStep(parseInt(savedStep));
-          showNotification('success', 
-            lang === 'hindi' ? 'आपका पिछला डेटा restore हो गया! 📂' : 
-            lang === 'hinglish' ? 'Aapka previous data restore ho gaya! 📂' :
-            'Previous data restored! 📂'
-          );
-        } else {
-          clearLocalStorage(); // Clear old data
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load from localStorage:', error);
-    }
-  }, [lang, showNotification]);
+
 
   const clearLocalStorage = () => {
     localStorage.removeItem('userFeedbackForm');
@@ -771,26 +711,63 @@ const AdvancedUserFeedbackForm = () => {
 
   // Load data on component mount
   useEffect(() => {
-    // Check if already submitted first
-    const wasSubmitted = checkPreviousSubmission();
-    if (!wasSubmitted) {
-      loadFromLocalStorage();
+    // Check submission directly without function call
+    try {
+      const userSubmission = localStorage.getItem('userFeedbackSubmitted');
+      if (userSubmission) {
+        const submissionData = JSON.parse(userSubmission);
+        const submissionTime = new Date(submissionData.timestamp);
+        const now = new Date();
+        const daysDiff = (now - submissionTime) / (1000 * 60 * 60 * 24);
+        
+        if (daysDiff < 30) {
+          setAlreadySubmitted(true);
+          setSubmissionInfo(submissionData);
+          return;
+        } else {
+          localStorage.removeItem('userFeedbackSubmitted');
+        }
+      }
+      
+      // Load saved form data
+      const savedForm = localStorage.getItem('userFeedbackForm');
+      const savedStep = localStorage.getItem('userFeedbackStep');
+      const lastSaved = localStorage.getItem('userFeedbackLastSaved');
+      
+      if (savedForm && savedStep && lastSaved) {
+        const saveTime = new Date(lastSaved);
+        const now = new Date();
+        const hoursDiff = (now.getTime() - saveTime.getTime()) / (1000 * 3600);
+        
+        if (hoursDiff < 24) {
+          setForm(JSON.parse(savedForm));
+          setCurrentStep(parseInt(savedStep));
+        }
+      }
+    } catch (error) {
+      console.error('Error in initialization:', error);
     }
-  }, [loadFromLocalStorage]);
+  }, []); // Run only once on mount
 
   // Auto-save on form changes (debounced)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (form.name || form.email || form.phone) { // Only save if there's meaningful data
-        saveToLocalStorage();
+        try {
+          localStorage.setItem('userFeedbackForm', JSON.stringify(form));
+          localStorage.setItem('userFeedbackStep', currentStep.toString());
+          localStorage.setItem('userFeedbackLastSaved', new Date().toISOString());
+        } catch (error) {
+          console.error('Failed to save to localStorage:', error);
+        }
       }
     }, 1000); // 1 second debounce
     
     return () => clearTimeout(timer);
-  }, [form, currentStep, saveToLocalStorage]);
+  }, [form, currentStep]); // Direct implementation, no function dependency
 
   // Advanced form change handler with real-time validation
-  const handleChange = (field, value) => {
+  const handleChange = useCallback((field, value) => {
     let processedValue = value;
     let errorMessage = '';
     
@@ -834,17 +811,17 @@ const AdvancedUserFeedbackForm = () => {
     } else if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
-  };
+  }, [errors]);
 
   // Handle multiple selections
-  const handleMultiSelect = (field, option) => {
+  const handleMultiSelect = useCallback((field, option) => {
     const current = form[field];
     const updated = current.includes(option) 
       ? current.filter(item => item !== option)
       : [...current, option];
     
     handleChange(field, updated);
-  };
+  }, [form, handleChange]);
 
   // Progress calculation
   const progress = (currentStep / 5) * 100;
@@ -1017,7 +994,7 @@ const AdvancedUserFeedbackForm = () => {
 
               <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: window.innerWidth > 768 ? '1fr 1fr' : '1fr', 
+                gridTemplateColumns: window.innerWidth > 768 ? '1fr 1.5fr' : '1fr', 
                 gap: '20px' 
               }}>
                 <div>
@@ -1092,48 +1069,7 @@ const AdvancedUserFeedbackForm = () => {
                   )}
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                  <div>
-                    <label style={{ 
-                      display: 'block',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: '#374151',
-                      marginBottom: '8px',
-                      textAlign: 'left'
-                    }}>
-                      {currentLang.profile.age}
-                    </label>
-                    <select
-                      value={form.age}
-                      onChange={(e) => handleChange('age', e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
-                        border: errors.age ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
-                        fontSize: '16px',
-                        outline: 'none',
-                        transition: 'all 0.3s ease',
-                        background: '#fff',
-                        cursor: 'pointer',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                        boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
-                      }}
-                    >
-                      {(currentLang.profile.ageOptions || []).map((option, index) => (
-                        <option key={index} value={index === 0 ? '' : option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.age && (
-                      <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
-                        {errors.age}
-                      </div>
-                    )}
-                  </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px' }}>
                   
                   <div>
                     <label style={{ 
@@ -1233,7 +1169,7 @@ const AdvancedUserFeedbackForm = () => {
                       background: '#fff',
                       cursor: 'pointer',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                      backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")',
+                      backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'%3e%3c/path%3e%3c/svg%3e")',
                       backgroundPosition: window.innerWidth <= 768 ? 'right 16px center' : 'right 12px center',
                       backgroundRepeat: 'no-repeat',
                       backgroundSize: '16px',
@@ -1243,7 +1179,7 @@ const AdvancedUserFeedbackForm = () => {
                       height: window.innerWidth <= 768 ? '52px' : '48px'
                     }}
                   >
-                    {(currentLang.profile.occupationOptions || []).map((option, index) => (
+                    {currentLang.profile.occupationOptions.map((option, index) => (
                       <option key={index} value={index === 0 ? '' : option}>
                         {option}
                       </option>
@@ -1281,7 +1217,7 @@ const AdvancedUserFeedbackForm = () => {
                       background: '#fff',
                       cursor: 'pointer',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                      backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3e%3c/svg%3e")',
+                      backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'%3e%3c/path%3e%3c/svg%3e")',
                       backgroundPosition: window.innerWidth <= 768 ? 'right 16px center' : 'right 12px center',
                       backgroundRepeat: 'no-repeat',
                       backgroundSize: '16px',
@@ -1291,7 +1227,7 @@ const AdvancedUserFeedbackForm = () => {
                       height: window.innerWidth <= 768 ? '52px' : '48px'
                     }}
                   >
-                    {(currentLang.profile.budgetOptions || []).map((option, index) => (
+                    {currentLang.profile.budgetOptions.map((option, index) => (
                       <option key={index} value={index === 0 ? '' : option}>
                         {option}
                       </option>
@@ -1652,14 +1588,14 @@ const AdvancedUserFeedbackForm = () => {
                   margin: '0 0 8px 0',
                   color: '#1e293b'
                 }}>
-                  {currentLang.success?.title}
+                  {currentLang.success.title}
                 </h2>
                 <p style={{
                   fontSize: '16px',
                   color: '#64748b',
                   margin: 0
                 }}>
-                  {currentLang.success?.subtitle}
+                  {currentLang.success.subtitle}
                 </p>
               </div>
 
@@ -1674,10 +1610,10 @@ const AdvancedUserFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.success?.willingToPay}
+                    {currentLang.success.willingToPay}
                   </label>
                   <div style={{ display: 'grid', gap: '8px' }}>
-                    {(currentLang.success?.paymentOptions || []).map((option, index) => (
+                    {currentLang.success.paymentOptions.map((option, index) => (
                       <label 
                         key={index}
                         style={{
@@ -1729,7 +1665,7 @@ const AdvancedUserFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.success?.recommendation}
+                    {currentLang.success.recommendation}
                   </label>
                   <div style={{
                     display: 'flex',
@@ -1771,10 +1707,10 @@ const AdvancedUserFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.success?.urgency}
+                    {currentLang.success.urgency}
                   </label>
                   <div style={{ display: 'grid', gap: '8px' }}>
-                    {(currentLang.success?.urgencyOptions || []).map((option, index) => (
+                    {currentLang.success.urgencyOptions.map((option, index) => (
                       <label 
                         key={index}
                         style={{

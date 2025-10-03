@@ -1204,7 +1204,7 @@ const AdvancedOwnerFeedbackForm = () => {
                 {/* Row 2: Phone + City */}
                 <div style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: window.innerWidth > 768 ? '1fr 1fr' : '1fr', 
+                  gridTemplateColumns: window.innerWidth > 768 ? '1fr 1.5fr' : '1fr', 
                   gap: '20px' 
                 }}>
                   <div>

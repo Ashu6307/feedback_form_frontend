@@ -581,7 +581,6 @@ const AdminDashboard = () => {
                                                     <div style={{ fontSize: '11px', color: '#64748b' }}>{feedback.phone}</div>
                                                 </td>
                                                 <td style={modernTableCell}>
-                                                    <div>{feedback.age}</div>
                                                     <div style={{ fontSize: '12px', color: '#64748b' }}>
                                                         {feedback.occupation}
                                                     </div>
@@ -892,7 +891,6 @@ const AdminDashboard = () => {
                                             <p><strong>Name:</strong> {selectedFeedback.name || 'N/A'}</p>
                                             <p><strong>Email:</strong> {selectedFeedback.email || 'N/A'}</p>
                                             <p><strong>Phone:</strong> {selectedFeedback.phone || 'N/A'}</p>
-                                            <p><strong>Age:</strong> {selectedFeedback.age || 'N/A'}</p>
                                             <p><strong>City:</strong> {selectedFeedback.city || 'N/A'}</p>
                                             <p><strong>Occupation:</strong> {selectedFeedback.occupation || 'N/A'}</p>
                                         </div>
