@@ -80,10 +80,10 @@ const HomePage = ({ onNavigate, lang, setLang }) => {
       {/* Language Selector */}
       <div style={{
         position: 'fixed',
-        top: '20px',
-        right: '20px',
+        top: window.innerWidth <= 768 ? '15px' : '20px',
+        right: window.innerWidth <= 768 ? '15px' : '20px',
         display: 'flex',
-        gap: '8px',
+        gap: window.innerWidth <= 768 ? '3px' : '8px',
         zIndex: 1000
       }}>
         {['english', 'hindi', 'hinglish'].map(language => (
@@ -91,20 +91,19 @@ const HomePage = ({ onNavigate, lang, setLang }) => {
             key={language}
             onClick={() => setLang(language)}
             style={{
-              padding: '8px 16px',
+              padding: window.innerWidth <= 768 ? '6px 12px' : '8px 16px',
               borderRadius: '25px',
               border: 'none',
               background: lang === language ? '#fff' : 'rgba(255,255,255,0.2)',
               color: lang === language ? '#667eea' : '#fff',
-              fontSize: '14px',
-              fontWeight: '500',
               cursor: 'pointer',
-              transition: 'all 0.3s ease',
+              fontSize: window.innerWidth <= 768 ? '12px' : '14px',
+              fontWeight: '500',
               backdropFilter: 'blur(10px)',
-              textTransform: 'capitalize'
+              transition: 'all 0.3s ease'
             }}
           >
-            {language}
+            {language === 'english' ? 'EN' : language === 'hindi' ? 'हिं' : 'HI'}
           </button>
         ))}
       </div>
@@ -113,7 +112,7 @@ const HomePage = ({ onNavigate, lang, setLang }) => {
       <div style={{
         maxWidth: '1200px',
         width: '100%',
-        padding: '0 20px'
+        padding: window.innerWidth <= 768 ? '70px 20px 0' : '0 20px'
       }}>
         {/* Header Section */}
         <div style={{
