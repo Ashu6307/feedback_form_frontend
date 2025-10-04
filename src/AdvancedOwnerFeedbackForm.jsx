@@ -165,6 +165,50 @@ const AdvancedOwnerFeedbackForm = () => {
         hindi: '📝 अन्य',
         hinglish: '📝 Other'
       }
+    },
+    successMetrics: {
+      'WILLING_TO_PAY_YES': {
+        english: '💳 Yes, I would pay for a comprehensive platform',
+        hindi: '💳 हाँ, मैं एक व्यापक प्लेटफॉर्म के लिए भुगतान करूंगा',
+        hinglish: '💳 Haan, main comprehensive platform ke liye payment karunga'
+      },
+      'WILLING_TO_PAY_NO': {
+        english: '💸 No, I prefer free solutions only',
+        hindi: '💸 नहीं, मैं केवल मुफ्त समाधान पसंद करता हूं',
+        hinglish: '💸 Nahi, main sirf free solutions prefer karta hun'
+      },
+      'WILLING_TO_PAY_MAYBE': {
+        english: '🤔 Maybe, depends on the ROI and features',
+        hindi: '🤔 हो सकता है, ROI और सुविधाओं पर निर्भर करता है',
+        hinglish: '🤔 Ho sakta hai, ROI aur features par depend karta hai'
+      },
+      'URGENCY_IMMEDIATE': {
+        english: '⏰ Immediate (within 1 month)',
+        hindi: '⏰ तत्काल (1 महीने में)',
+        hinglish: '⏰ Immediate (1 month me)'
+      },
+      'URGENCY_PLANNING': {
+        english: '📅 Planning (2-6 months)',
+        hindi: '📅 योजना बना रहे हैं (2-6 महीने)',
+        hinglish: '📅 Planning kar rahe hain (2-6 months)'
+      },
+      'URGENCY_EXPLORING': {
+        english: '👀 Just exploring solutions',
+        hindi: '👀 सिर्फ समाधान देख रहे हैं',
+        hinglish: '👀 Sirf solutions explore kar rahe hain'
+      }
+    },
+    referralSource: {
+      'FRIEND_REFERRAL': {
+        english: '👥 Shared by a friend',
+        hindi: '👥 दोस्त द्वारा शेयर किया गया',
+        hinglish: '👥 Friend ne share kiya'
+      },
+      'GROUP_REFERRAL': {
+        english: '👥 Found in a group/community',
+        hindi: '👥 किसी ग्रुप/कम्युनिटी में मिला',
+        hinglish: '👥 Kisi group/community me mila'
+      }
     }
   };
   const [form, setForm] = useState({
@@ -175,6 +219,9 @@ const AdvancedOwnerFeedbackForm = () => {
     city: '',
     propertyType: '',
     propertyCount: '',
+    referralSource: '',
+    friendName: '',
+    groupName: '',
     
     // Challenges
     biggestChallenge: '',
@@ -243,7 +290,7 @@ const AdvancedOwnerFeedbackForm = () => {
     english: {
       title: '🏢 Platform Feedback - Property Owner',
       subtitle: 'Help us build the perfect PG & Room rental platform for you',
-      steps: ['👤 Profile', '⚡ Challenges', '💎 Value', '🚀 Features', '📊 Success'],
+      steps: ['👤 Profile', '⚡ Challenges', '💎 Value', '🚀 Features', '📊 Success', '📤 Referral'],
       
       // Step 1: Profile
       profile: {
@@ -348,6 +395,20 @@ const AdvancedOwnerFeedbackForm = () => {
         ]
       },
       
+      // Step 6: Referral
+      referral: {
+        title: 'How Did You Get This Form?',
+        subtitle: 'Help us understand how our property owners find us',
+        referralType: 'How did you receive this form? *',
+        referralOptions: [
+          'Select source',
+          '👥 Shared by a friend',
+          '👥 Found in a group/community'
+        ],
+        friendName: 'Friend\'s Name',
+        groupName: 'Group/Community Name'
+      },
+      
       navigation: {
         next: 'Next Step →',
         previous: '← Previous',
@@ -357,7 +418,7 @@ const AdvancedOwnerFeedbackForm = () => {
     hindi: {
       title: '🏢 प्लेटफॉर्म फीडबैक - संपत्ति मालिक',
       subtitle: 'आपके लिए सबसे बेहतरीन PG और रूम रेंटल प्लेटफॉर्म बनाने में हमारी मदद करें',
-      steps: ['👤 प्रोफाइल', '⚡ चुनौतियां', '💎 मूल्य', '🚀 फीचर्स', '📊 सफलता'],
+      steps: ['👤 प्रोफाइल', '⚡ चुनौतियां', '💎 मूल्य', '🚀 फीचर्स', '📊 सफलता', '📤 रेफरल'],
       
       // Step 1: Profile
       profile: {
@@ -462,6 +523,20 @@ const AdvancedOwnerFeedbackForm = () => {
         ]
       },
       
+      // Step 6: Referral
+      referral: {
+        title: 'यह फॉर्म आपको कैसे मिला?',
+        subtitle: 'हमें समझने में मदद करें कि हमारे संपत्ति मालिक हमें कैसे खोजते हैं',
+        referralType: 'यह फॉर्म आपको कैसे मिला? *',
+        referralOptions: [
+          'सोर्स चुनें',
+          '👥 दोस्त द्वारा शेयर किया गया',
+          '👥 किसी ग्रुप/कम्युनिटी में मिला'
+        ],
+        friendName: 'दोस्त का नाम',
+        groupName: 'ग्रुप/कम्युनिटी का नाम'
+      },
+      
       navigation: {
         next: 'अगला चरण →',
         previous: '← पिछला',
@@ -471,7 +546,7 @@ const AdvancedOwnerFeedbackForm = () => {
     hinglish: {
       title: '🏢 Platform Feedback - Property Owner',
       subtitle: 'Aapke liye perfect PG aur Room rental platform banane mein humari madad kariye',
-      steps: ['👤 Profile', '⚡ Challenges', '💎 Value', '🚀 Features', '📊 Success'],
+      steps: ['👤 Profile', '⚡ Challenges', '💎 Value', '🚀 Features', '📊 Success', '📤 Referral'],
       
       // Step 1: Profile
       profile: {
@@ -574,6 +649,20 @@ const AdvancedOwnerFeedbackForm = () => {
           '⏳ 2-3 months',
           '🤔 Abhi bhi research kar rahe hain'
         ]
+      },
+      
+      // Step 6: Referral
+      referral: {
+        title: 'Ye Form Aapko Kaise Mila?',
+        subtitle: 'Humein samjhane me help kare ki hamare property owners humein kaise dhoondhtey hain',
+        referralType: 'Ye form aapko kaise mila? *',
+        referralOptions: [
+          'Source select kare',
+          '👥 Friend ne share kiya',
+          '👥 Kisi group/community me mila'
+        ],
+        friendName: 'Friend ka naam',
+        groupName: 'Group/Community ka naam'
       },
       
       navigation: {
@@ -695,6 +784,15 @@ const AdvancedOwnerFeedbackForm = () => {
         if (!form.marketingSpend) newErrors.marketingSpend = 'Please select your current spend';
         if (!form.timing) newErrors.timing = 'Please select your timeline';
         break;
+      case 6:
+        if (!form.referralSource) newErrors.referralSource = 'Please select how you found this form';
+        if (form.referralSource === 'FRIEND_REFERRAL' && !form.friendName.trim()) {
+          newErrors.friendName = 'Please enter your friend\'s name';
+        }
+        if (form.referralSource === 'GROUP_REFERRAL' && !form.groupName.trim()) {
+          newErrors.groupName = 'Please enter the group/community name';
+        }
+        break;
       default:
         // No validation for unknown steps
         break;
@@ -796,7 +894,7 @@ const AdvancedOwnerFeedbackForm = () => {
 
   // Professional form submission with loading states
   const handleSubmit = async () => {
-    const stepErrors = validateStep(5);
+    const stepErrors = validateStep(6);
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors);
       return;
@@ -953,7 +1051,7 @@ const AdvancedOwnerFeedbackForm = () => {
   }, [form, currentStep, saveOwnerToLocalStorage]);
 
   // Progress calculation
-  const progress = (currentStep / 5) * 100;
+  const progress = (currentStep / 6) * 100;
 
   // If already submitted, redirect to thank you page
   if (alreadySubmitted && submissionInfo) {
@@ -1922,6 +2020,130 @@ const AdvancedOwnerFeedbackForm = () => {
               </div>
             </div>
           )}
+
+          {/* Step 6: Referral */}
+          {currentStep === 6 && (
+            <div>
+              <div style={{ marginBottom: '32px' }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  margin: '0 0 8px 0',
+                  color: '#1e293b'
+                }}>
+                  {currentLang.referral.title}
+                </h2>
+                <p style={{
+                  fontSize: '16px',
+                  color: '#64748b',
+                  margin: 0
+                }}>
+                  {currentLang.referral.subtitle}
+                </p>
+              </div>
+
+              <div style={{ display: 'grid', gap: '24px' }}>
+                {/* Referral Type */}
+                <div>
+                  <label style={{ 
+                    display: 'block',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    marginBottom: '12px',
+                    textAlign: 'left'
+                  }}>
+                    {currentLang.referral.referralType}
+                  </label>
+                  <select
+                    value={form.referralSource}
+                    onChange={(e) => handleChange('referralSource', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                      border: errors.referralSource ? '2px solid #ef4444' : '1px solid #d1d5db',
+                      borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                      fontSize: '16px',
+                      outline: 'none',
+                      transition: 'all 0.3s ease',
+                      background: '#fff',
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                      backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'%3e%3c/path%3e%3c/svg%3e")',
+                      backgroundPosition: window.innerWidth <= 768 ? 'right 16px center' : 'right 12px center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: '16px',
+                      paddingRight: window.innerWidth <= 768 ? '48px' : '40px',
+                      appearance: 'none',
+                      boxSizing: 'border-box',
+                      height: window.innerWidth <= 768 ? '52px' : '48px'
+                    }}
+                  >
+                    <option value="">{currentLang.referral.referralOptions[0]}</option>
+                    <option value="FRIEND_REFERRAL">{getOptionText('FRIEND_REFERRAL', 'referralSource')}</option>
+                    <option value="GROUP_REFERRAL">{getOptionText('GROUP_REFERRAL', 'referralSource')}</option>
+                  </select>
+                  {errors.referralSource && (
+                    <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                      {errors.referralSource}
+                    </div>
+                  )}
+                </div>
+
+                {/* Name Input - Show when any option is selected */}
+                {(form.referralSource === 'FRIEND_REFERRAL' || form.referralSource === 'GROUP_REFERRAL') && (
+                  <div>
+                    <label style={{ 
+                      display: 'block',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#374151',
+                      marginBottom: '8px',
+                      textAlign: 'left'
+                    }}>
+                      {form.referralSource === 'FRIEND_REFERRAL'
+                        ? currentLang.referral.friendName 
+                        : currentLang.referral.groupName} *
+                    </label>
+                    <input
+                      type="text"
+                      value={form.referralSource === 'FRIEND_REFERRAL' ? form.friendName : form.groupName}
+                      onChange={(e) => {
+                        if (form.referralSource === 'FRIEND_REFERRAL') {
+                          handleChange('friendName', e.target.value);
+                        } else {
+                          handleChange('groupName', e.target.value);
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: window.innerWidth <= 768 ? '20px 24px' : '16px 20px',
+                        border: (errors.friendName || errors.groupName) ? '2px solid #ef4444' : '1px solid #d1d5db',
+                        borderRadius: window.innerWidth <= 768 ? '15px' : '12px',
+                        fontSize: window.innerWidth <= 768 ? '18px' : '16px',
+                        outline: 'none',
+                        transition: 'border-color 0.2s',
+                        background: '#fff',
+                        boxSizing: 'border-box',
+                        height: window.innerWidth <= 768 ? '60px' : '56px',
+                        letterSpacing: '0.5px'
+                      }}
+                      placeholder={
+                        form.referralSource === 'FRIEND_REFERRAL'
+                          ? "Enter your friend's full name (e.g., Priya Gupta)"
+                          : "Enter group/community name (e.g., Mumbai Property Owners Association)"
+                      }
+                    />
+                    {(errors.friendName || errors.groupName) && (
+                      <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                        {errors.friendName || errors.groupName}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Navigation */}
@@ -1953,7 +2175,7 @@ const AdvancedOwnerFeedbackForm = () => {
           </button>
           
           <button
-            onClick={currentStep === 5 ? handleSubmit : handleNext}
+            onClick={currentStep === 6 ? handleSubmit : handleNext}
             disabled={loading || stepLoading || !isCurrentStepComplete()}
             style={{
               padding: window.innerWidth <= 768 ? '16px 32px' : '12px 24px',
@@ -1989,7 +2211,7 @@ const AdvancedOwnerFeedbackForm = () => {
                  'Loading...'}
               </>
             ) : (
-              currentStep === 5 ? currentLang.navigation.submit : currentLang.navigation.next
+              currentStep === 6 ? currentLang.navigation.submit : currentLang.navigation.next
             )}
           </button>
         </div>

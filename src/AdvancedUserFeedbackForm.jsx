@@ -125,6 +125,50 @@ const AdvancedUserFeedbackForm = () => {
         hindi: 'अन्य',
         hinglish: 'Other'
       }
+    },
+    successMetrics: {
+      'WILLING_TO_PAY_YES': {
+        english: '💳 Yes, I would pay for a better PG experience',
+        hindi: '💳 हाँ, बेहतर पीजी अनुभव के लिए पैसे दूंगा',
+        hinglish: '💳 Haan, better PG experience ke liye paisa dunga'
+      },
+      'WILLING_TO_PAY_NO': {
+        english: '💸 No, I prefer free options only',
+        hindi: '💸 नहीं, मैं केवल मुफ्त विकल्प पसंद करता हूं',
+        hinglish: '💸 Nahi, main sirf free options prefer karta hun'
+      },
+      'WILLING_TO_PAY_MAYBE': {
+        english: '🤔 Maybe, depends on the features',
+        hindi: '🤔 हो सकता है, सुविधाओं पर निर्भर करता है',
+        hinglish: '🤔 Ho sakta hai, features par depend karta hai'
+      },
+      'URGENCY_IMMEDIATE': {
+        english: '⏰ Urgent (within 1 month)',
+        hindi: '⏰ जल्दी (1 महीने में)',
+        hinglish: '⏰ Urgent (1 month me)'
+      },
+      'URGENCY_PLANNING': {
+        english: '📅 Planning (2-3 months)',
+        hindi: '📅 प्लानिंग कर रहे हैं (2-3 महीने)',
+        hinglish: '📅 Planning kar rahe hain (2-3 months)'
+      },
+      'URGENCY_EXPLORING': {
+        english: '👀 Just exploring options',
+        hindi: '👀 सिर्फ ऑप्शन्स देख रहे हैं',
+        hinglish: '👀 Sirf options dekh rahe hain'
+      }
+    },
+    referralSource: {
+      'FRIEND_REFERRAL': {
+        english: '👥 Shared by a friend',
+        hindi: '👥 दोस्त द्वारा शेयर किया गया',
+        hinglish: '👥 Friend ne share kiya'
+      },
+      'GROUP_REFERRAL': {
+        english: '👥 Found in a group/community',
+        hindi: '👥 किसी ग्रुप/कम्युनिटी में मिला',
+        hinglish: '👥 Kisi group/community me mila'
+      }
     }
   };
 
@@ -138,6 +182,9 @@ const AdvancedUserFeedbackForm = () => {
     otherCity: '',
     occupation: '',
     budget: '',
+    referralSource: '',
+    friendName: '',
+    groupName: '',
     
     // Current Situation - store ID
     currentSituation: '',
@@ -175,7 +222,7 @@ const AdvancedUserFeedbackForm = () => {
     english: {
       title: '👤 Platform Feedback - PG/Room Seeker',
       subtitle: 'Help us create the perfect room hunting experience for you',
-      steps: ['👤 Profile', '🏠 Current', '⚡ Problems', '💎 Features', '📊 Success'],
+      steps: ['👤 Profile', '🏠 Current', '⚡ Problems', '💎 Features', '📊 Success', '📤 Referral'],
       
       // Step 1: Profile
       profile: {
@@ -197,7 +244,8 @@ const AdvancedUserFeedbackForm = () => {
           'Select budget range',
           '₹5,000-10,000',
           '₹10,000-15,000',
-        ]
+        ],
+
       },
       
       // Step 2: Current Situation
@@ -272,9 +320,23 @@ const AdvancedUserFeedbackForm = () => {
         ]
       },
       
+      // Step 6: Referral
+      referral: {
+        title: 'How Did You Get This Form?',
+        subtitle: 'Help us understand how our users find us',
+        referralType: 'How did you receive this form? *',
+        referralOptions: [
+          'Select source',
+          '👥 Shared by a friend',
+          '👥 Found in a group/community'
+        ],
+        friendName: 'Friend\'s Name',
+        groupName: 'Group/Community Name'
+      },
+      
       navigation: {
         next: 'Next Step →',
-        prev: '← Previous', 
+        prev: '← Previous',
         submit: '🚀 Submit Feedback'
       }
     },
@@ -282,7 +344,7 @@ const AdvancedUserFeedbackForm = () => {
     hindi: {
       title: '👤 प्लेटफॉर्म फीडबैक - पीजी/रूम खोजने वाले',
       subtitle: 'आपके लिए परफेक्ट रूम हंटिंग एक्सपीरियंस बनाने में हमारी मदद करें',
-      steps: ['👤 प्रोफाइल', '🏠 वर्तमान', '⚡ समस्याएं', '💎 फीचर्स', '📊 सफलता'],
+      steps: ['👤 प्रोफाइल', '🏠 वर्तमान', '⚡ समस्याएं', '💎 फीचर्स', '📊 सफलता', '📤 रेफरल'],
       
       profile: {
         title: 'त्वरित प्रोफाइल सेटअप',
@@ -303,7 +365,8 @@ const AdvancedUserFeedbackForm = () => {
           'बजट रेंज चुनें',
           '₹5,000-10,000',
           '₹10,000-15,000',
-        ]
+        ],
+
       },
       
       currentSituation: {
@@ -374,6 +437,20 @@ const AdvancedUserFeedbackForm = () => {
         ]
       },
       
+      // Step 6: Referral
+      referral: {
+        title: 'यह फॉर्म आपको कैसे मिला?',
+        subtitle: 'हमें समझने में मदद करें कि हमारे यूजर्स हमें कैसे खोजते हैं',
+        referralType: 'यह फॉर्म आपको कैसे मिला? *',
+        referralOptions: [
+          'सोर्स चुनें',
+          '👥 दोस्त द्वारा शेयर किया गया',
+          '👥 किसी ग्रुप/कम्युनिटी में मिला'
+        ],
+        friendName: 'दोस्त का नाम',
+        groupName: 'ग्रुप/कम्युनिटी का नाम'
+      },
+      
       navigation: {
         next: 'अगला स्टेप →',
         prev: '← पिछला',
@@ -384,7 +461,7 @@ const AdvancedUserFeedbackForm = () => {
     hinglish: {
       title: '👤 Platform Feedback - PG/Room Seeker',
       subtitle: 'Perfect room hunting experience banane me hamare saath help kijiye',
-      steps: ['👤 Profile', '🏠 Current', '⚡ Problems', '💎 Features', '📊 Success'],
+      steps: ['👤 Profile', '🏠 Current', '⚡ Problems', '💎 Features', '📊 Success', '📤 Referral'],
       
       profile: {
         title: 'Quick Profile Setup',
@@ -405,7 +482,8 @@ const AdvancedUserFeedbackForm = () => {
           'Budget range select kare',
           '₹5,000-10,000',
           '₹10,000-15,000',
-        ]
+        ],
+
       },
       
       currentSituation: {
@@ -474,6 +552,20 @@ const AdvancedUserFeedbackForm = () => {
           '📅 Planning kar rahe hain (2-3 months)',
           '👀 Sirf options dekh rahe hain'
         ]
+      },
+      
+      // Step 6: Referral
+      referral: {
+        title: 'Ye Form Aapko Kaise Mila?',
+        subtitle: 'Humein samjhane me help kare ki hamare users humein kaise dhoondhtey hain',
+        referralType: 'Ye form aapko kaise mila? *',
+        referralOptions: [
+          'Source select kare',
+          '👥 Friend ne share kiya',
+          '👥 Kisi group/community me mila'
+        ],
+        friendName: 'Friend ka naam',
+        groupName: 'Group/Community ka naam'
       },
       
       navigation: {
@@ -596,17 +688,26 @@ const AdvancedUserFeedbackForm = () => {
         if (!form.willingToPay) newErrors.willingToPay = 'Please select payment option';
         if (!form.urgency) newErrors.urgency = 'Please select urgency option';
         break;
+      case 6:
+        if (!form.referralSource) newErrors.referralSource = 'Please select how you found this form';
+        if (form.referralSource === 'FRIEND_REFERRAL' && !form.friendName.trim()) {
+          newErrors.friendName = 'Please enter your friend\'s name';
+        }
+        if (form.referralSource === 'GROUP_REFERRAL' && !form.groupName.trim()) {
+          newErrors.groupName = 'Please enter the group/community name';
+        }
+        break;
       default:
         // No validation for unknown steps
         break;
     }
     
-    return newErrors;
+    return Object.keys(newErrors).length === 0;
   };
 
   // Professional form submission with loading states
   const handleSubmit = async () => {
-    if (!validateStep(5)) return;
+    if (!validateStep(6)) return;
     
     // Start loading
     setLoading(true);
@@ -824,7 +925,7 @@ const AdvancedUserFeedbackForm = () => {
   }, [form, handleChange]);
 
   // Progress calculation
-  const progress = (currentStep / 5) * 100;
+  const progress = (currentStep / 6) * 100;
 
   // If already submitted, redirect to thank you page
   if (alreadySubmitted && submissionInfo) {
@@ -1239,6 +1340,8 @@ const AdvancedUserFeedbackForm = () => {
                     </div>
                   )}
                 </div>
+
+
               </div>
             </div>
           )}
@@ -1613,26 +1716,26 @@ const AdvancedUserFeedbackForm = () => {
                     {currentLang.success.willingToPay}
                   </label>
                   <div style={{ display: 'grid', gap: '8px' }}>
-                    {currentLang.success.paymentOptions.map((option, index) => (
+                    {['WILLING_TO_PAY_YES', 'WILLING_TO_PAY_NO', 'WILLING_TO_PAY_MAYBE'].map((optionId) => (
                       <label 
-                        key={index}
+                        key={optionId}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
                           padding: window.innerWidth <= 768 ? '18px 20px' : '12px',
-                          border: form.willingToPay === option ? '2px solid #667eea' : '1px solid #e2e8f0',
+                          border: form.willingToPay === optionId ? '2px solid #667eea' : '1px solid #e2e8f0',
                           borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
                           cursor: 'pointer',
                           transition: 'all 0.2s ease',
-                          background: form.willingToPay === option ? '#f0f4ff' : '#fff',
+                          background: form.willingToPay === optionId ? '#f0f4ff' : '#fff',
                           minHeight: window.innerWidth <= 768 ? '52px' : '44px'
                         }}
                       >
                         <input
                           type="radio"
                           name="willingToPay"
-                          value={option}
-                          checked={form.willingToPay === option}
+                          value={optionId}
+                          checked={form.willingToPay === optionId}
                           onChange={(e) => handleChange('willingToPay', e.target.value)}
                           style={{ 
                             marginRight: window.innerWidth <= 768 ? '12px' : '8px',
@@ -1643,7 +1746,7 @@ const AdvancedUserFeedbackForm = () => {
                           fontSize: window.innerWidth <= 768 ? '16px' : '14px', 
                           color: '#374151' 
                         }}>
-                          {option}
+                          {getOptionText(optionId, 'successMetrics')}
                         </span>
                       </label>
                     ))}
@@ -1710,30 +1813,30 @@ const AdvancedUserFeedbackForm = () => {
                     {currentLang.success.urgency}
                   </label>
                   <div style={{ display: 'grid', gap: '8px' }}>
-                    {currentLang.success.urgencyOptions.map((option, index) => (
+                    {['URGENCY_IMMEDIATE', 'URGENCY_PLANNING', 'URGENCY_EXPLORING'].map((optionId) => (
                       <label 
-                        key={index}
+                        key={optionId}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
                           padding: '12px',
-                          border: form.urgency === option ? '2px solid #667eea' : '1px solid #e2e8f0',
+                          border: form.urgency === optionId ? '2px solid #667eea' : '1px solid #e2e8f0',
                           borderRadius: '8px',
                           cursor: 'pointer',
                           transition: 'all 0.2s ease',
-                          background: form.urgency === option ? '#f0f4ff' : '#fff'
+                          background: form.urgency === optionId ? '#f0f4ff' : '#fff'
                         }}
                       >
                         <input
                           type="radio"
                           name="urgency"
-                          value={option}
-                          checked={form.urgency === option}
+                          value={optionId}
+                          checked={form.urgency === optionId}
                           onChange={(e) => handleChange('urgency', e.target.value)}
                           style={{ marginRight: '8px' }}
                         />
                         <span style={{ fontSize: '14px', color: '#374151' }}>
-                          {option}
+                          {getOptionText(optionId, 'successMetrics')}
                         </span>
                       </label>
                     ))}
@@ -1744,6 +1847,130 @@ const AdvancedUserFeedbackForm = () => {
                     </div>
                   )}
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Referral */}
+          {currentStep === 6 && (
+            <div>
+              <div style={{ marginBottom: '32px' }}>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  margin: '0 0 8px 0',
+                  color: '#1e293b'
+                }}>
+                  {currentLang.referral.title}
+                </h2>
+                <p style={{
+                  fontSize: '16px',
+                  color: '#64748b',
+                  margin: 0
+                }}>
+                  {currentLang.referral.subtitle}
+                </p>
+              </div>
+
+              <div style={{ display: 'grid', gap: '24px' }}>
+                {/* Referral Type */}
+                <div>
+                  <label style={{ 
+                    display: 'block',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#374151',
+                    marginBottom: '12px',
+                    textAlign: 'left'
+                  }}>
+                    {currentLang.referral.referralType}
+                  </label>
+                  <select
+                    value={form.referralSource}
+                    onChange={(e) => handleChange('referralSource', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                      border: errors.referralSource ? '2px solid #ef4444' : '1px solid #d1d5db',
+                      borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                      fontSize: '16px',
+                      outline: 'none',
+                      transition: 'all 0.3s ease',
+                      background: '#fff',
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                      backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'%3e%3c/path%3e%3c/svg%3e")',
+                      backgroundPosition: window.innerWidth <= 768 ? 'right 16px center' : 'right 12px center',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: '16px',
+                      paddingRight: window.innerWidth <= 768 ? '48px' : '40px',
+                      appearance: 'none',
+                      boxSizing: 'border-box',
+                      height: window.innerWidth <= 768 ? '52px' : '48px'
+                    }}
+                  >
+                    <option value="">{currentLang.referral.referralOptions[0]}</option>
+                    <option value="FRIEND_REFERRAL">{getOptionText('FRIEND_REFERRAL', 'referralSource')}</option>
+                    <option value="GROUP_REFERRAL">{getOptionText('GROUP_REFERRAL', 'referralSource')}</option>
+                  </select>
+                  {errors.referralSource && (
+                    <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                      {errors.referralSource}
+                    </div>
+                  )}
+                </div>
+
+                {/* Name Input - Show when any option is selected */}
+                {(form.referralSource === 'FRIEND_REFERRAL' || form.referralSource === 'GROUP_REFERRAL') && (
+                  <div>
+                    <label style={{ 
+                      display: 'block',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#374151',
+                      marginBottom: '8px',
+                      textAlign: 'left'
+                    }}>
+                      {form.referralSource === 'FRIEND_REFERRAL'
+                        ? currentLang.referral.friendName 
+                        : currentLang.referral.groupName} *
+                    </label>
+                    <input
+                      type="text"
+                      value={form.referralSource === 'FRIEND_REFERRAL' ? form.friendName : form.groupName}
+                      onChange={(e) => {
+                        if (form.referralSource === 'FRIEND_REFERRAL') {
+                          handleChange('friendName', e.target.value);
+                        } else {
+                          handleChange('groupName', e.target.value);
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: window.innerWidth <= 768 ? '20px 24px' : '16px 20px',
+                        border: (errors.friendName || errors.groupName) ? '2px solid #ef4444' : '1px solid #d1d5db',
+                        borderRadius: window.innerWidth <= 768 ? '15px' : '12px',
+                        fontSize: window.innerWidth <= 768 ? '18px' : '16px',
+                        outline: 'none',
+                        transition: 'border-color 0.2s',
+                        background: '#fff',
+                        boxSizing: 'border-box',
+                        height: window.innerWidth <= 768 ? '60px' : '56px',
+                        letterSpacing: '0.5px'
+                      }}
+                      placeholder={
+                        form.referralSource === 'FRIEND_REFERRAL'
+                          ? "Enter your friend's full name (e.g., Rahul Sharma)"
+                          : "Enter group/community name (e.g., Delhi PG Seekers WhatsApp Group)"
+                      }
+                    />
+                    {(errors.friendName || errors.groupName) && (
+                      <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
+                        {errors.friendName || errors.groupName}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -1785,7 +2012,7 @@ const AdvancedUserFeedbackForm = () => {
 
           <button
             onClick={async () => {
-              if (currentStep === 5) {
+              if (currentStep === 6) {
                 handleSubmit();
               } else if (validateStep(currentStep)) {
                 setStepLoading(true);
@@ -1833,7 +2060,7 @@ const AdvancedUserFeedbackForm = () => {
                  'Loading...'}
               </>
             ) : (
-              currentStep === 5 ? currentLang.navigation.submit : currentLang.navigation.next
+              currentStep === 6 ? currentLang.navigation.submit : currentLang.navigation.next
             )}
           </button>
         </div>
