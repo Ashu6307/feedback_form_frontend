@@ -47,33 +47,36 @@ function App() {
       <div className="App">
         {/* Show navigation only on feedback forms and admin page, hide on home and thank you */}
         {(page === 'user' || page === 'owner') && (
-          <nav style={{
-            position: 'fixed',
-            top: '20px',
-            left: '20px',
-            zIndex: 1000,
-            background: 'rgba(255,255,255,0.9)',
-            borderRadius: '25px',
-            padding: '10px 20px',
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
-          }}>
-            <button 
-              onClick={()=>handleNavigation('home')}
-              style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                border: 'none',
-                padding: '8px 16px',
-                borderRadius: '20px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
-            >
-              🏠 Home
-            </button>
-          </nav>
+          <button 
+            onClick={()=>handleNavigation('home')}
+            style={{
+              position: 'fixed',
+              top: '20px',
+              left: '20px',
+              zIndex: 1000,
+              background: 'rgba(255,255,255,0.9)',
+              color: '#667eea',
+              border: 'none',
+              padding: '8px',
+              borderRadius: '50%',
+              fontSize: '18px',
+              cursor: 'pointer',
+              backdropFilter: 'blur(10px)',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              width: '44px',
+              height: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s ease',
+              ':hover': {
+                transform: 'scale(1.05)',
+                boxShadow: '0 6px 16px rgba(0,0,0,0.2)'
+              }
+            }}
+          >
+            🏠
+          </button>
         )}
         
         {/* Admin navigation - only visible on admin page */}

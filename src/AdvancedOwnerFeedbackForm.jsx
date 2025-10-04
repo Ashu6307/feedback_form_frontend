@@ -1078,7 +1078,7 @@ const AdvancedOwnerFeedbackForm = () => {
         top: '20px',
         right: '20px',
         display: 'flex',
-        gap: '8px',
+        gap: window.innerWidth <= 768 ? '4px' : '8px',
         zIndex: 1000
       }}>
         {['english', 'hindi', 'hinglish'].map(language => (
@@ -1086,13 +1086,13 @@ const AdvancedOwnerFeedbackForm = () => {
             key={language}
             onClick={() => handleLanguageChange(language)}
             style={{
-              padding: '8px 16px',
+              padding: window.innerWidth <= 768 ? '6px 12px' : '8px 16px',
               borderRadius: '25px',
               border: 'none',
               background: lang === language ? '#fff' : 'rgba(255,255,255,0.2)',
               color: lang === language ? '#667eea' : '#fff',
               cursor: 'pointer',
-              fontSize: '14px',
+              fontSize: window.innerWidth <= 768 ? '12px' : '14px',
               fontWeight: '500',
               backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease'
@@ -1106,7 +1106,7 @@ const AdvancedOwnerFeedbackForm = () => {
       {/* Main Container */}
       <div style={{
         maxWidth: '600px',
-        margin: '0 auto',
+        margin: window.innerWidth <= 768 ? '70px auto 0' : '0 auto',
         background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(20px)',
         borderRadius: '24px',
