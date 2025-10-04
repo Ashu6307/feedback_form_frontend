@@ -15,6 +15,28 @@ const AdvancedUserFeedbackForm = () => {
   
   // Option mapping system - each option has a unique ID
   const optionMappings = {
+    city: {
+      'MUMBAI': { english: 'Mumbai', hindi: 'मुंबई', hinglish: 'Mumbai' },
+      'DELHI': { english: 'Delhi', hindi: 'दिल्ली', hinglish: 'Delhi' },
+      'BANGALORE': { english: 'Bangalore', hindi: 'बेंगलुरु', hinglish: 'Bangalore' },
+      'PUNE': { english: 'Pune', hindi: 'पुणे', hinglish: 'Pune' },
+      'HYDERABAD': { english: 'Hyderabad', hindi: 'हैदराबाद', hinglish: 'Hyderabad' },
+      'CHENNAI': { english: 'Chennai', hindi: 'चेन्नई', hinglish: 'Chennai' },
+      'KOLKATA': { english: 'Kolkata', hindi: 'कोलकाता', hinglish: 'Kolkata' },
+      'OTHER': { english: 'Other', hindi: 'अन्य', hinglish: 'Other' }
+    },
+    occupation: {
+      'STUDENT': { english: 'Student', hindi: 'छात्र/छात्रा', hinglish: 'Student' },
+      'WORKING_PROFESSIONAL': { english: 'Working Professional', hindi: 'कार्यरत पेशेवर', hinglish: 'Working Professional' },
+      'OTHER': { english: 'Other', hindi: 'अन्य', hinglish: 'Other' }
+    },
+    budget: {
+      'UNDER_5K': { english: 'Under ₹5,000', hindi: '₹5,000 से कम', hinglish: 'Under ₹5,000' },
+      '5K_10K': { english: '₹5,000 - ₹10,000', hindi: '₹5,000 - ₹10,000', hinglish: '₹5,000 - ₹10,000' },
+      '10K_15K': { english: '₹10,000 - ₹15,000', hindi: '₹10,000 - ₹15,000', hinglish: '₹10,000 - ₹15,000' },
+      '15K_20K': { english: '₹15,000 - ₹20,000', hindi: '₹15,000 - ₹20,000', hinglish: '₹15,000 - ₹20,000' },
+      'ABOVE_20K': { english: 'Above ₹20,000', hindi: '₹20,000 से ऊपर', hinglish: 'Above ₹20,000' }
+    },
     currentSituation: {
       'LOOKING_ACTIVE': { 
         english: 'Looking for PG actively',
@@ -586,6 +608,14 @@ const AdvancedUserFeedbackForm = () => {
     return optionMappings[category][optionId][lang] || optionId;
   };
 
+  // Helper function to get English text for database storage
+  const getEnglishText = (optionId, category) => {
+    if (!optionId || !optionMappings[category] || !optionMappings[category][optionId]) {
+      return optionId; // Return as-is if not found
+    }
+    return optionMappings[category][optionId]['english'] || optionId;
+  };
+
   const getOptionsList = (category) => {
     if (!optionMappings[category]) return [];
     return Object.keys(optionMappings[category]).map(id => ({
@@ -713,14 +743,19 @@ const AdvancedUserFeedbackForm = () => {
     setLoading(true);
     setSubmitStatus('');
     
-    // Convert IDs to readable text for submission
+    // Convert IDs to English text for database storage
     const formData = {
       ...form,
-      city: form.city === 'OTHER' ? form.otherCity : getOptionText(form.city, 'city'),
-      // Convert option IDs to readable text
-      currentSituation: form.currentSituation ? getOptionText(form.currentSituation, 'currentSituation') : '',
-      mainProblems: form.mainProblems.map(id => getOptionText(id, 'painPoints')),
-      importantFeatures: form.importantFeatures.map(id => getOptionText(id, 'features')),
+      city: form.city === 'OTHER' ? form.otherCity : getEnglishText(form.city, 'city'),
+      // Convert option IDs to English text
+      occupation: getEnglishText(form.occupation, 'occupation'),
+      budget: getEnglishText(form.budget, 'budget'),
+      currentSituation: form.currentSituation ? getEnglishText(form.currentSituation, 'currentSituation') : '',
+      mainProblems: form.mainProblems.map(id => getEnglishText(id, 'painPoints')),
+      importantFeatures: form.importantFeatures.map(id => getEnglishText(id, 'features')),
+      willingToPay: getEnglishText(form.willingToPay, 'successMetrics'),
+      urgency: getEnglishText(form.urgency, 'successMetrics'),
+      referralSource: getEnglishText(form.referralSource, 'referralSource'),
       // Add metadata
       language: lang,
       completionTime: Date.now() - form.formStartTime,
@@ -944,11 +979,12 @@ const AdvancedUserFeedbackForm = () => {
         minHeight: '100vh',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         fontFamily: 'Inter, system-ui, sans-serif',
-        padding: '20px 0'
+        padding: '20px 0',
+        position: 'relative'
       }}>
       {/* Language Selector */}
       <div style={{
-        position: 'fixed',
+        position: 'absolute',
         top: '20px',
         right: '20px',
         display: 'flex',
@@ -980,7 +1016,7 @@ const AdvancedUserFeedbackForm = () => {
       {/* Main Container */}
       <div style={{
         maxWidth: '600px',
-        margin: window.innerWidth <= 768 ? '70px auto 0' : '0 auto',
+        margin: '0 auto',
         background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(20px)',
         borderRadius: '24px',

@@ -50,7 +50,7 @@ function App() {
           <button 
             onClick={()=>handleNavigation('home')}
             style={{
-              position: 'fixed',
+              position: 'absolute',
               top: '20px',
               left: '20px',
               zIndex: 1000,
@@ -68,11 +68,7 @@ function App() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              transition: 'all 0.3s ease',
-              ':hover': {
-                transform: 'scale(1.05)',
-                boxShadow: '0 6px 16px rgba(0,0,0,0.2)'
-              }
+              transition: 'all 0.3s ease'
             }}
           >
             🏠

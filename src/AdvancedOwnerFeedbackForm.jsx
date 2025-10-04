@@ -15,6 +15,35 @@ const AdvancedOwnerFeedbackForm = () => {
   
   // Option mapping system - each option has a unique ID
   const optionMappings = {
+    city: {
+      'MUMBAI': { english: 'Mumbai', hindi: 'मुंबई', hinglish: 'Mumbai' },
+      'DELHI': { english: 'Delhi', hindi: 'दिल्ली', hinglish: 'Delhi' },
+      'BANGALORE': { english: 'Bangalore', hindi: 'बेंगलुरु', hinglish: 'Bangalore' },
+      'PUNE': { english: 'Pune', hindi: 'पुणे', hinglish: 'Pune' },
+      'HYDERABAD': { english: 'Hyderabad', hindi: 'हैदराबाद', hinglish: 'Hyderabad' },
+      'CHENNAI': { english: 'Chennai', hindi: 'चेन्नई', hinglish: 'Chennai' },
+      'KOLKATA': { english: 'Kolkata', hindi: 'कोलकाता', hinglish: 'Kolkata' },
+      'OTHER': { english: 'Other', hindi: 'अन्य', hinglish: 'Other' }
+    },
+    propertyType: {
+      'PG_HOSTEL': { english: 'PG/Hostel', hindi: 'पीजी/हॉस्टल', hinglish: 'PG/Hostel' },
+      'APARTMENT': { english: 'Apartment/Flat', hindi: 'अपार्टमेंट/फ्लैट', hinglish: 'Apartment/Flat' },
+      'INDEPENDENT_HOUSE': { english: 'Independent House', hindi: 'स्वतंत्र मकान', hinglish: 'Independent House' },
+      'COMMERCIAL': { english: 'Commercial Property', hindi: 'व्यावसायिक संपत्ति', hinglish: 'Commercial Property' },
+      'OTHER': { english: 'Other', hindi: 'अन्य', hinglish: 'Other' }
+    },
+    propertyCount: {
+      '1_PROPERTY': { english: '1 Property', hindi: '1 संपत्ति', hinglish: '1 Property' },
+      '2_5_PROPERTIES': { english: '2-5 Properties', hindi: '2-5 संपत्तियां', hinglish: '2-5 Properties' },
+      '6_10_PROPERTIES': { english: '6-10 Properties', hindi: '6-10 संपत्तियां', hinglish: '6-10 Properties' },
+      'MORE_THAN_10': { english: 'More than 10', hindi: '10 से अधिक', hinglish: 'More than 10' }
+    },
+    marketingSpend: {
+      'UNDER_5K': { english: 'Under ₹5,000/month', hindi: '₹5,000/महीना से कम', hinglish: 'Under ₹5,000/month' },
+      '5K_15K': { english: '₹5,000 - ₹15,000/month', hindi: '₹5,000 - ₹15,000/महीना', hinglish: '₹5,000 - ₹15,000/month' },
+      '15K_30K': { english: '₹15,000 - ₹30,000/month', hindi: '₹15,000 - ₹30,000/महीना', hinglish: '₹15,000 - ₹30,000/month' },
+      'ABOVE_30K': { english: 'Above ₹30,000/month', hindi: '₹30,000/महीना से ऊपर', hinglish: 'Above ₹30,000/month' }
+    },
     biggestChallenge: {
       'FINDING_TENANTS': {
         english: '🔍 Finding reliable tenants',
@@ -263,6 +292,14 @@ const AdvancedOwnerFeedbackForm = () => {
       return optionId; // Return as-is if not found
     }
     return optionMappings[category][optionId][lang] || optionId;
+  };
+
+  // Helper function to get English text for database storage
+  const getEnglishText = (optionId, category) => {
+    if (!optionId || !optionMappings[category] || !optionMappings[category][optionId]) {
+      return optionId; // Return as-is if not found
+    }
+    return optionMappings[category][optionId]['english'] || optionId;
   };
 
   const getOptionsList = (category) => {
@@ -908,13 +945,20 @@ const AdvancedOwnerFeedbackForm = () => {
       // Calculate form completion time
       const completionTime = (Date.now() - form.formStartTime) / 1000; // in seconds
       
-      // Convert IDs to readable text for submission
+      // Convert IDs to English text for database storage
       const submissionData = {
         ...form,
-        // Convert option IDs to readable text
-        biggestChallenge: form.biggestChallenge ? getOptionText(form.biggestChallenge, 'biggestChallenge') : '',
-        switchReasons: form.switchReasons.map(id => getOptionText(id, 'switchReasons')),
-        topFeatures: form.topFeatures.map(id => getOptionText(id, 'topFeatures')),
+        // Convert option IDs to English text
+        city: form.city === 'OTHER' ? form.otherCity : getEnglishText(form.city, 'city'),
+        propertyType: getEnglishText(form.propertyType, 'propertyType'),
+        propertyCount: getEnglishText(form.propertyCount, 'propertyCount'),
+        biggestChallenge: form.biggestChallenge ? getEnglishText(form.biggestChallenge, 'biggestChallenge') : '',
+        switchReasons: form.switchReasons.map(id => getEnglishText(id, 'switchReasons')),
+        topFeatures: form.topFeatures.map(id => getEnglishText(id, 'topFeatures')),
+        readyToPay: getEnglishText(form.readyToPay, 'successMetrics'),
+        marketingSpend: getEnglishText(form.marketingSpend, 'marketingSpend'),
+        timing: getEnglishText(form.timing, 'successMetrics'),
+        referralSource: getEnglishText(form.referralSource, 'referralSource'),
         // Add metadata
         completionTime,
         language: lang,
@@ -1070,11 +1114,12 @@ const AdvancedOwnerFeedbackForm = () => {
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       fontFamily: 'Inter, system-ui, sans-serif',
-      padding: '20px 0'
+      padding: '20px 0',
+      position: 'relative'
     }}>
       {/* Language Selector */}
       <div style={{
-        position: 'fixed',
+        position: 'absolute',
         top: '20px',
         right: '20px',
         display: 'flex',
@@ -1106,7 +1151,7 @@ const AdvancedOwnerFeedbackForm = () => {
       {/* Main Container */}
       <div style={{
         maxWidth: '600px',
-        margin: window.innerWidth <= 768 ? '70px auto 0' : '0 auto',
+        margin: '0 auto',
         background: 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(20px)',
         borderRadius: '24px',

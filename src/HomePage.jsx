@@ -75,11 +75,12 @@ const HomePage = ({ onNavigate, lang, setLang }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '20px'
+      padding: '20px',
+      position: 'relative'
     }}>
       {/* Language Selector */}
       <div style={{
-        position: 'fixed',
+        position: 'absolute',
         top: window.innerWidth <= 768 ? '15px' : '20px',
         right: window.innerWidth <= 768 ? '15px' : '20px',
         display: 'flex',
@@ -112,7 +113,7 @@ const HomePage = ({ onNavigate, lang, setLang }) => {
       <div style={{
         maxWidth: '1200px',
         width: '100%',
-        padding: window.innerWidth <= 768 ? '70px 20px 0' : '0 20px'
+        padding: '0 20px'
       }}>
         {/* Header Section */}
         <div style={{
