@@ -2137,9 +2137,13 @@ const AdvancedOwnerFeedbackForm = () => {
                       height: isMobile ? '52px' : '48px'
                     }}
                   >
-                    <option value="">{currentLang.referral.referralOptions[0]}</option>
-                    <option value="FRIEND_REFERRAL">{getOptionText('FRIEND_REFERRAL', 'referralSource')}</option>
-                    <option value="GROUP_REFERRAL">{getOptionText('GROUP_REFERRAL', 'referralSource')}</option>
+                    <option value="">{currentLang?.referral?.referralOptions?.[0] || 'Select source'}</option>
+                    <option value="FRIEND_REFERRAL">
+                      {optionMappings?.referralSource?.FRIEND_REFERRAL?.[lang] || '👥 Shared by a friend'}
+                    </option>
+                    <option value="GROUP_REFERRAL">
+                      {optionMappings?.referralSource?.GROUP_REFERRAL?.[lang] || '👥 Found in a group/community'}
+                    </option>
                   </select>
                   {errors.referralSource && (
                     <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
@@ -2160,8 +2164,8 @@ const AdvancedOwnerFeedbackForm = () => {
                       textAlign: 'left'
                     }}>
                       {form.referralSource === 'FRIEND_REFERRAL'
-                        ? currentLang.referral.friendName 
-                        : currentLang.referral.groupName} *
+                        ? (currentLang?.referral?.friendName || "Friend's Name")
+                        : (currentLang?.referral?.groupName || "Group/Community Name")} *
                     </label>
                     <input
                       type="text"
