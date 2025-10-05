@@ -2081,18 +2081,14 @@ const AdvancedOwnerFeedbackForm = () => {
                   margin: '0 0 8px 0',
                   color: '#1e293b'
                 }}>
-                  {lang === 'hindi' ? 'आप तक यह फॉर्म कैसे पहुंचा?' :
-                   lang === 'hinglish' ? 'Aap Tak Ye Form Kaise Pahuncha?' :
-                   'How Did You Get This Form?'}
+                  {currentLang.referral.title}
                 </h2>
                 <p style={{
                   fontSize: '16px',
                   color: '#64748b',
                   margin: 0
                 }}>
-                  {lang === 'hindi' ? 'हमें समझने में मदद करें कि हमारे संपत्ति मालिक हमें कैसे खोजते हैं' :
-                   lang === 'hinglish' ? 'Hamein samjhane me madad karein ki hamare property owners hamein kaise khojtein hain' :
-                   'Help us understand how our property owners find us'}
+                  {currentLang.referral.subtitle}
                 </p>
               </div>
 
@@ -2107,9 +2103,7 @@ const AdvancedOwnerFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {lang === 'hindi' ? 'आपको यह फॉर्म कैसे मिला? *' :
-                     lang === 'hinglish' ? 'Aapko ye form kaise mila? *' :
-                     'How did you receive this form? *'}
+                    {currentLang.referral.referralType}
                   </label>
                   <select
                     value={form.referralSource}
@@ -2135,21 +2129,12 @@ const AdvancedOwnerFeedbackForm = () => {
                       height: isMobile ? '52px' : '48px'
                     }}
                   >
-                    <option value="">
-                      {lang === 'hindi' ? 'स्रोत चुनें' : 
-                       lang === 'hinglish' ? 'Source select karein' : 
-                       'Select source'}
-                    </option>
-                    <option value="FRIEND_REFERRAL">
-                      {lang === 'hindi' ? '👥 दोस्त द्वारा शेयर किया गया' : 
-                       lang === 'hinglish' ? '👥 Friend ne share kiya' : 
-                       '👥 Shared by a friend'}
-                    </option>
-                    <option value="GROUP_REFERRAL">
-                      {lang === 'hindi' ? '👥 किसी ग्रुप/कम्युनिटी में मिला' : 
-                       lang === 'hinglish' ? '👥 Kisi group/community me mila' : 
-                       '👥 Found in a group/community'}
-                    </option>
+                    <option value="">{currentLang.referral.referralOptions[0]}</option>
+                    {getOptionsList('referralSource').map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.text}
+                      </option>
+                    ))}
                   </select>
                   {errors.referralSource && (
                     <div style={{ color: '#ef4444', fontSize: '12px', marginTop: '4px' }}>
@@ -2170,12 +2155,8 @@ const AdvancedOwnerFeedbackForm = () => {
                       textAlign: 'left'
                     }}>
                       {form.referralSource === 'FRIEND_REFERRAL'
-                        ? (lang === 'hindi' ? 'दोस्त का नाम' : 
-                           lang === 'hinglish' ? 'Friend ka naam' : 
-                           "Friend's Name")
-                        : (lang === 'hindi' ? 'ग्रुप/कम्युनिटी का नाम' : 
-                           lang === 'hinglish' ? 'Group/Community ka naam' : 
-                           "Group/Community Name")} *
+                        ? currentLang.referral.friendName
+                        : currentLang.referral.groupName} *
                     </label>
                     <input
                       type="text"
