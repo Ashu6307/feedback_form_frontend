@@ -299,14 +299,6 @@ const AdvancedOwnerFeedbackForm = () => {
 
 
 
-  // Helper functions for ID-based option mapping system
-  const getOptionText = (optionId, category) => {
-    if (!optionId || !optionMappings[category] || !optionMappings[category][optionId]) {
-      return optionId; // Return as-is if not found
-    }
-    return optionMappings[category][optionId][lang] || optionId;
-  };
-
   // Helper function to get English text for database storage
   const getEnglishText = (optionId, category) => {
     if (!optionId || !optionMappings[category] || !optionMappings[category][optionId]) {
@@ -2089,14 +2081,18 @@ const AdvancedOwnerFeedbackForm = () => {
                   margin: '0 0 8px 0',
                   color: '#1e293b'
                 }}>
-                  {currentLang.referral.title}
+                  {lang === 'hindi' ? 'आप तक यह फॉर्म कैसे पहुंचा?' :
+                   lang === 'hinglish' ? 'Aap Tak Ye Form Kaise Pahuncha?' :
+                   'How Did You Get This Form?'}
                 </h2>
                 <p style={{
                   fontSize: '16px',
                   color: '#64748b',
                   margin: 0
                 }}>
-                  {currentLang.referral.subtitle}
+                  {lang === 'hindi' ? 'हमें समझने में मदद करें कि हमारे संपत्ति मालिक हमें कैसे खोजते हैं' :
+                   lang === 'hinglish' ? 'Hamein samjhane me madad karein ki hamare property owners hamein kaise khojtein hain' :
+                   'Help us understand how our property owners find us'}
                 </p>
               </div>
 
@@ -2111,7 +2107,9 @@ const AdvancedOwnerFeedbackForm = () => {
                     marginBottom: '12px',
                     textAlign: 'left'
                   }}>
-                    {currentLang.referral.referralType}
+                    {lang === 'hindi' ? 'आपको यह फॉर्म कैसे मिला? *' :
+                     lang === 'hinglish' ? 'Aapko ye form kaise mila? *' :
+                     'How did you receive this form? *'}
                   </label>
                   <select
                     value={form.referralSource}
