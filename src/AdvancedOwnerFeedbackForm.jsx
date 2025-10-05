@@ -1281,7 +1281,7 @@ const AdvancedOwnerFeedbackForm = () => {
                 {/* Row 1: Name + Email */}
                 <div style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: window.innerWidth > 768 ? '1fr 1fr' : '1fr', 
+                  gridTemplateColumns: !isMobile ? '1fr 1fr' : '1fr', 
                   gap: '20px' 
                 }}>
                   <div>
@@ -1301,15 +1301,15 @@ const AdvancedOwnerFeedbackForm = () => {
                       onChange={(e) => handleChange('name', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                        padding: isMobile ? '16px 20px' : '12px 16px',
                         border: errors.name ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                        borderRadius: isMobile ? '12px' : '8px',
                         fontSize: '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
+                        height: isMobile ? '52px' : '48px'
                       }}
                       placeholder="Enter your full name"
                     />
@@ -1337,15 +1337,15 @@ const AdvancedOwnerFeedbackForm = () => {
                       onChange={(e) => handleChange('email', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                        padding: isMobile ? '16px 20px' : '12px 16px',
                         border: errors.email ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                        borderRadius: isMobile ? '12px' : '8px',
                         fontSize: '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
+                        height: isMobile ? '52px' : '48px'
                       }}
                       placeholder="Enter your email address"
                     />
@@ -1360,7 +1360,7 @@ const AdvancedOwnerFeedbackForm = () => {
                 {/* Row 2: Phone + City */}
                 <div style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: window.innerWidth > 768 ? '1fr 1.5fr' : '1fr', 
+                  gridTemplateColumns: !isMobile ? '1fr 1.5fr' : '1fr', 
                   gap: '20px' 
                 }}>
                   <div>
@@ -1380,15 +1380,15 @@ const AdvancedOwnerFeedbackForm = () => {
                       onChange={(e) => handleChange('phone', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                        padding: isMobile ? '16px 20px' : '12px 16px',
                         border: errors.phone ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                        borderRadius: isMobile ? '12px' : '8px',
                         fontSize: '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
+                        height: isMobile ? '52px' : '48px'
                       }}
                       placeholder="Enter your phone number"
                     />
@@ -2175,15 +2175,15 @@ const AdvancedOwnerFeedbackForm = () => {
                       }}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '20px 24px' : '16px 20px',
+                        padding: isMobile ? '20px 24px' : '16px 20px',
                         border: (errors.friendName || errors.groupName) ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '15px' : '12px',
-                        fontSize: window.innerWidth <= 768 ? '18px' : '16px',
+                        borderRadius: isMobile ? '15px' : '12px',
+                        fontSize: isMobile ? '18px' : '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '60px' : '56px',
+                        height: isMobile ? '60px' : '56px',
                         letterSpacing: '0.5px'
                       }}
                       placeholder={
