@@ -2137,12 +2137,20 @@ const AdvancedOwnerFeedbackForm = () => {
                       height: isMobile ? '52px' : '48px'
                     }}
                   >
-                    <option value="">{currentLang?.referral?.referralOptions?.[0] || 'Select source'}</option>
+                    <option value="">
+                      {lang === 'hindi' ? 'स्रोत चुनें' : 
+                       lang === 'hinglish' ? 'Source select karein' : 
+                       'Select source'}
+                    </option>
                     <option value="FRIEND_REFERRAL">
-                      {optionMappings?.referralSource?.FRIEND_REFERRAL?.[lang] || '👥 Shared by a friend'}
+                      {lang === 'hindi' ? '👥 दोस्त द्वारा शेयर किया गया' : 
+                       lang === 'hinglish' ? '👥 Friend ne share kiya' : 
+                       '👥 Shared by a friend'}
                     </option>
                     <option value="GROUP_REFERRAL">
-                      {optionMappings?.referralSource?.GROUP_REFERRAL?.[lang] || '👥 Found in a group/community'}
+                      {lang === 'hindi' ? '👥 किसी ग्रुप/कम्युनिटी में मिला' : 
+                       lang === 'hinglish' ? '👥 Kisi group/community me mila' : 
+                       '👥 Found in a group/community'}
                     </option>
                   </select>
                   {errors.referralSource && (
@@ -2164,8 +2172,12 @@ const AdvancedOwnerFeedbackForm = () => {
                       textAlign: 'left'
                     }}>
                       {form.referralSource === 'FRIEND_REFERRAL'
-                        ? (currentLang?.referral?.friendName || "Friend's Name")
-                        : (currentLang?.referral?.groupName || "Group/Community Name")} *
+                        ? (lang === 'hindi' ? 'दोस्त का नाम' : 
+                           lang === 'hinglish' ? 'Friend ka naam' : 
+                           "Friend's Name")
+                        : (lang === 'hindi' ? 'ग्रुप/कम्युनिटी का नाम' : 
+                           lang === 'hinglish' ? 'Group/Community ka naam' : 
+                           "Group/Community Name")} *
                     </label>
                     <input
                       type="text"
