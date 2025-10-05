@@ -283,6 +283,19 @@ const AdvancedOwnerFeedbackForm = () => {
   const [notification, setNotification] = useState({ show: false, type: '', message: '' });
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const [submissionInfo, setSubmissionInfo] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection effect
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile(); // Initial check
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
 
 
@@ -1123,7 +1136,7 @@ const AdvancedOwnerFeedbackForm = () => {
         top: '20px',
         right: '20px',
         display: 'flex',
-        gap: window.innerWidth <= 768 ? '4px' : '8px',
+        gap: isMobile ? '4px' : '8px',
         zIndex: 1000
       }}>
         {['english', 'hindi', 'hinglish'].map(language => (
@@ -1131,13 +1144,13 @@ const AdvancedOwnerFeedbackForm = () => {
             key={language}
             onClick={() => handleLanguageChange(language)}
             style={{
-              padding: window.innerWidth <= 768 ? '6px 12px' : '8px 16px',
+              padding: isMobile ? '6px 12px' : '8px 16px',
               borderRadius: '25px',
               border: 'none',
               background: lang === language ? '#fff' : 'rgba(255,255,255,0.2)',
               color: lang === language ? '#667eea' : '#fff',
               cursor: 'pointer',
-              fontSize: window.innerWidth <= 768 ? '12px' : '14px',
+              fontSize: isMobile ? '12px' : '14px',
               fontWeight: '500',
               backdropFilter: 'blur(10px)',
               transition: 'all 0.3s ease'
@@ -1240,15 +1253,15 @@ const AdvancedOwnerFeedbackForm = () => {
 
         {/* Form Content */}
         <div style={{ 
-          padding: window.innerWidth <= 768 ? '16px' : '32px'
+          padding: isMobile ? '16px' : '32px'
         }}>
           
           {/* Step 1: Profile */}
           {currentStep === 1 && (
             <div>
-              <div style={{ textAlign: 'center', marginBottom: window.innerWidth <= 768 ? '20px' : '32px' }}>
+              <div style={{ textAlign: 'center', marginBottom: isMobile ? '20px' : '32px' }}>
                 <h2 style={{
-                  fontSize: window.innerWidth <= 768 ? '20px' : '24px',
+                  fontSize: isMobile ? '20px' : '24px',
                   fontWeight: '600',
                   margin: '0 0 8px 0',
                   color: '#1e293b'
@@ -2105,9 +2118,9 @@ const AdvancedOwnerFeedbackForm = () => {
                     onChange={(e) => handleChange('referralSource', e.target.value)}
                     style={{
                       width: '100%',
-                      padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                      padding: isMobile ? '16px 20px' : '12px 16px',
                       border: errors.referralSource ? '2px solid #ef4444' : '1px solid #d1d5db',
-                      borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                      borderRadius: isMobile ? '12px' : '8px',
                       fontSize: '16px',
                       outline: 'none',
                       transition: 'all 0.3s ease',
@@ -2115,13 +2128,13 @@ const AdvancedOwnerFeedbackForm = () => {
                       cursor: 'pointer',
                       boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
                       backgroundImage: 'url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3e%3cpath stroke=\'%236B7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'%3e%3c/path%3e%3c/svg%3e")',
-                      backgroundPosition: window.innerWidth <= 768 ? 'right 16px center' : 'right 12px center',
+                      backgroundPosition: isMobile ? 'right 16px center' : 'right 12px center',
                       backgroundRepeat: 'no-repeat',
                       backgroundSize: '16px',
-                      paddingRight: window.innerWidth <= 768 ? '48px' : '40px',
+                      paddingRight: isMobile ? '48px' : '40px',
                       appearance: 'none',
                       boxSizing: 'border-box',
-                      height: window.innerWidth <= 768 ? '52px' : '48px'
+                      height: isMobile ? '52px' : '48px'
                     }}
                   >
                     <option value="">{currentLang.referral.referralOptions[0]}</option>
