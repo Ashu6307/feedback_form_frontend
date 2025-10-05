@@ -913,7 +913,7 @@ const AdvancedOwnerFeedbackForm = () => {
     // Smooth transition with loading
     setTimeout(() => {
       setErrors({});
-      if (currentStep < 5) {
+      if (currentStep < 6) {
         setCurrentStep(currentStep + 1);
         saveOwnerToLocalStorage(); // Save progress
       }
