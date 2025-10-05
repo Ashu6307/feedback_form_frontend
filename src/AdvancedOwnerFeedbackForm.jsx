@@ -1416,15 +1416,15 @@ const AdvancedOwnerFeedbackForm = () => {
                       onChange={(e) => handleChange('city', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                        padding: isMobile ? '16px 20px' : '12px 16px',
                         border: errors.city ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                        borderRadius: isMobile ? '12px' : '8px',
                         fontSize: '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
+                        height: isMobile ? '52px' : '48px'
                       }}
                       placeholder="Enter your city"
                     />
@@ -1439,7 +1439,7 @@ const AdvancedOwnerFeedbackForm = () => {
                 {/* Row 3: Property Type + Count */}
                 <div style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: window.innerWidth > 768 ? '1fr 1fr' : '1fr', 
+                  gridTemplateColumns: !isMobile ? '1fr 1fr' : '1fr', 
                   gap: '20px' 
                 }}>
                   <div>
@@ -1458,16 +1458,16 @@ const AdvancedOwnerFeedbackForm = () => {
                       onChange={(e) => handleChange('propertyType', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                        padding: isMobile ? '16px 20px' : '12px 16px',
                         border: errors.propertyType ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                        borderRadius: isMobile ? '12px' : '8px',
                         fontSize: '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         cursor: 'pointer',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
+                        height: isMobile ? '52px' : '48px'
                       }}
                     >
                       {currentLang.profile.propertyTypeOptions.map((option, idx) => (
@@ -1499,16 +1499,16 @@ const AdvancedOwnerFeedbackForm = () => {
                       onChange={(e) => handleChange('propertyCount', e.target.value)}
                       style={{
                         width: '100%',
-                        padding: window.innerWidth <= 768 ? '16px 20px' : '12px 16px',
+                        padding: isMobile ? '16px 20px' : '12px 16px',
                         border: errors.propertyCount ? '2px solid #ef4444' : '1px solid #d1d5db',
-                        borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+                        borderRadius: isMobile ? '12px' : '8px',
                         fontSize: '16px',
                         outline: 'none',
                         transition: 'border-color 0.2s',
                         background: '#fff',
                         cursor: 'pointer',
                         boxSizing: 'border-box',
-                        height: window.innerWidth <= 768 ? '52px' : '48px'
+                        height: isMobile ? '52px' : '48px'
                       }}
                     >
                       {currentLang.profile.propertyCountOptions.map((option, idx) => (
@@ -1556,17 +1556,17 @@ const AdvancedOwnerFeedbackForm = () => {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      padding: window.innerWidth <= 768 ? '20px 24px' : '16px 20px',
+                      padding: isMobile ? '20px 24px' : '16px 20px',
                       border: form.biggestChallenge === option.id 
                         ? '2px solid #667eea' 
                         : '1px solid #e5e7eb',
-                      borderRadius: window.innerWidth <= 768 ? '16px' : '12px',
+                      borderRadius: isMobile ? '16px' : '12px',
                       cursor: 'pointer',
                       transition: 'all 0.2s ease',
                       background: form.biggestChallenge === option.id 
                         ? 'rgba(102, 126, 234, 0.05)' 
                         : '#fff',
-                      minHeight: window.innerWidth <= 768 ? '56px' : '48px'
+                      minHeight: isMobile ? '56px' : '48px'
                     }}
                   >
                     <input
@@ -1576,15 +1576,15 @@ const AdvancedOwnerFeedbackForm = () => {
                       checked={form.biggestChallenge === option.id}
                       onChange={(e) => handleChange('biggestChallenge', e.target.value)}
                       style={{
-                        marginRight: window.innerWidth <= 768 ? '16px' : '12px',
-                        width: window.innerWidth <= 768 ? '20px' : '16px',
-                        height: window.innerWidth <= 768 ? '20px' : '16px',
+                        marginRight: isMobile ? '16px' : '12px',
+                        width: isMobile ? '20px' : '16px',
+                        height: isMobile ? '20px' : '16px',
                         accentColor: '#667eea',
-                        transform: window.innerWidth <= 768 ? 'scale(1.1)' : 'scale(1)'
+                        transform: isMobile ? 'scale(1.1)' : 'scale(1)'
                       }}
                     />
                     <span style={{
-                      fontSize: window.innerWidth <= 768 ? '17px' : '15px',
+                      fontSize: isMobile ? '17px' : '15px',
                       color: '#374151',
                       lineHeight: '1.4'
                     }}>
@@ -2215,17 +2215,17 @@ const AdvancedOwnerFeedbackForm = () => {
           <button
             onClick={handlePrevious}
             style={{
-              padding: window.innerWidth <= 768 ? '16px 32px' : '12px 24px',
+              padding: isMobile ? '16px 32px' : '12px 24px',
               border: '1px solid #d1d5db',
-              borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+              borderRadius: isMobile ? '12px' : '8px',
               background: '#fff',
               color: '#374151',
               cursor: currentStep > 1 ? 'pointer' : 'not-allowed',
-              fontSize: window.innerWidth <= 768 ? '18px' : '16px',
+              fontSize: isMobile ? '18px' : '16px',
               fontWeight: '500',
               opacity: currentStep > 1 ? 1 : 0.5,
               transition: 'all 0.2s ease',
-              minHeight: window.innerWidth <= 768 ? '48px' : '40px'
+              minHeight: isMobile ? '48px' : '40px'
             }}
             disabled={currentStep === 1}
           >
@@ -2236,22 +2236,22 @@ const AdvancedOwnerFeedbackForm = () => {
             onClick={currentStep === 6 ? handleSubmit : handleNext}
             disabled={loading || stepLoading || !isCurrentStepComplete()}
             style={{
-              padding: window.innerWidth <= 768 ? '16px 32px' : '12px 24px',
+              padding: isMobile ? '16px 32px' : '12px 24px',
               border: 'none',
-              borderRadius: window.innerWidth <= 768 ? '12px' : '8px',
+              borderRadius: isMobile ? '12px' : '8px',
               background: (loading || stepLoading || !isCurrentStepComplete()) 
                 ? '#ccc' 
                 : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: '#fff',
               cursor: (loading || stepLoading || !isCurrentStepComplete()) ? 'not-allowed' : 'pointer',
-              fontSize: window.innerWidth <= 768 ? '18px' : '16px',
+              fontSize: isMobile ? '18px' : '16px',
               fontWeight: '600',
               transition: 'all 0.2s ease',
               boxShadow: (loading || stepLoading || !isCurrentStepComplete()) 
                 ? 'none' 
                 : '0 4px 12px rgba(102, 126, 234, 0.3)',
               opacity: (loading || stepLoading || !isCurrentStepComplete()) ? 0.6 : 1,
-              minHeight: window.innerWidth <= 768 ? '48px' : '40px'
+              minHeight: isMobile ? '48px' : '40px'
             }}
           >
             {loading ? (
